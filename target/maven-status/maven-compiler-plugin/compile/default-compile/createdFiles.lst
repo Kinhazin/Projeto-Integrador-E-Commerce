@@ -1,0 +1,10 @@
+Service\UsuarioService.class
+Aplicacao\Main.class
+Aplicacao\Programa.class
+Model\Usuario.class
+BancoDeDados\ProdutoDAO.class
+BancoDeDados\Autenticador.class
+Model\Produto.class
+BancoDeDados\ConexaoMysql.class
+Utils\ValidarCPF.class
+BancoDeDados\PessoaDAO.class
