@@ -9,7 +9,8 @@ import BancoDeDados.PessoaDAO;
 import BancoDeDados.ProdutoDAO;
 import Model.Produto;
 import Model.Usuario;
-import Utils.ValidarCPF;
+import service.Criptografia;
+import utils.ValidarCPF;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,14 +34,18 @@ public class Programa {
         return Programa.escolha("\n-- BEM VINDO A LOJA VIRTUAL --\n[1] Entrar | [2] Cadastrar-se\nEscolha:");
     }
 
-    public static String logar() {
+    public static String logar() throws Exception {
         System.out.print("\nE-mail: ");
         String email = input.nextLine();
         System.out.print("Senha: ");
         String senha = input.nextLine();
+
+        Criptografia.valor = senha;
+        senha = Criptografia.criptografar();
         if (Autenticador.autenticar(email.replaceAll(" ", ""), senha.replaceAll(" ", ""))) {
             return Autenticador.verificarGrupo(email, senha);
-        };
+        }
+        ;
         return "falso";
     }
 
@@ -57,7 +62,8 @@ public class Programa {
             System.out.println("-------------------------------------------------------------------------------------");
 
             for (Produto produto : listaDeProdutos) {
-                // Assumindo que a classe Produto tem os métodos getId, getNome, getPreco e getEstoque.
+                // Assumindo que a classe Produto tem os métodos getId, getNome, getPreco e
+                // getEstoque.
                 System.out.printf("%-5d | %-35s | R$ %-12.2f |",
                         produto.getId(),
                         produto.getNome(),

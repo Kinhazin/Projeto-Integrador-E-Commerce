@@ -15,6 +15,8 @@ public class Autenticador {
             subst.setString(1, email);
             subst.setString(2, senha);
 
+            
+
             try (ResultSet rs = subst.executeQuery()) {
                 if (!rs.next()) {
                     System.out.println("USUÁRIO NÃO CADASTRADO");

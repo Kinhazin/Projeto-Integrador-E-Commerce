@@ -1,14 +1,15 @@
-package Service;
+package service;
 
 import Aplicacao.Programa;
 import BancoDeDados.PessoaDAO;
 import Model.Usuario;
-import Utils.ValidarCPF;
+import utils.ValidarCPF;
 import java.util.Scanner;
+import service.Criptografia;
 
 public class UsuarioService {
 
-    public static void cadastrarNovoUsuario(Scanner scanner) {
+    public static void cadastrarNovoUsuario(Scanner scanner) throws Exception {
         PessoaDAO usuarioDAO = new PessoaDAO();
 
         System.out.println("\n--- CADASTRO DE NOVO USUÁRIO ---");
@@ -52,6 +53,8 @@ public class UsuarioService {
                 if (senha.isEmpty()) {
                     System.out.println("A senha não pode estar em branco.");
                 } else {
+                    Criptografia.valor = senha;
+                     senha = Criptografia.criptografar();
                     break;
                 }
             } else {
@@ -72,7 +75,7 @@ public class UsuarioService {
         }
     }
 
-    public static void cadastrarUsuarioPeloAdmin(Scanner scanner) {
+    public static void cadastrarUsuarioPeloAdmin(Scanner scanner) throws Exception {
         PessoaDAO usuarioDAO = new PessoaDAO();
 
         System.out.println("\n--- CADASTRO DE NOVO USUÁRIO (ADMIN) ---");
@@ -106,7 +109,7 @@ public class UsuarioService {
 
         System.out.print("Crie uma senha temporária para o usuário: ");
         String senha = scanner.nextLine();
-
+        senha = Criptografia.criptografar();
         String grupo;
         while (true) {
             System.out.print("Defina o grupo do usuário ([1] USUARIO | [2] ADMINISTRADOR): ");
