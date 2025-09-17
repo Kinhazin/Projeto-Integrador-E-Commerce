@@ -2,6 +2,7 @@ package br.senac.integrador.projeto.controller;
 
 import br.senac.integrador.projeto.model.Pessoa; // suposição de que você tenha uma classe Pessoa
 import br.senac.integrador.projeto.repository.PessoaRepository; // suposição do repositório
+
 import org.springframework.beans.factory.annotation.Autowired; // se usar Spring
 import org.springframework.web.bind.annotation.*; // para anotações REST
 
@@ -18,7 +19,6 @@ public class PessoaController {
     public List<Pessoa> listarPessoas() {
         return pessoaRepository.findAll();
     }
-    
 
     @PostMapping
     public Pessoa adicionarPessoa(@RequestBody Pessoa pessoa) {
@@ -28,6 +28,19 @@ public class PessoaController {
     @GetMapping("/buscar")
     public List<Pessoa> buscarPorNomeESenha(@RequestParam String email, @RequestParam String senha) {
         return pessoaRepository.findByEmailAndSenha(email, senha);
+    }
+
+    @PutMapping("/{id}")
+    public Pessoa atualizarPessoa(@PathVariable Long id, @RequestBody Pessoa pessoaAtualizada) {
+        return pessoaRepository.findById(id)
+                .map(pessoa -> {
+                    pessoa.setNome(pessoaAtualizada.getNome());
+                    pessoa.setCpf(pessoaAtualizada.getCpf());
+                    pessoa.setSenha(pessoaAtualizada.getSenha());
+                    pessoa.setGrupo(pessoaAtualizada.getGrupo());
+                    return pessoaRepository.save(pessoa);
+                })
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com id: " + id));
     }
 
 }

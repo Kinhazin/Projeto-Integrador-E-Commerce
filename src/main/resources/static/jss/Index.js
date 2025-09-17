@@ -36,7 +36,7 @@ async function enviarDados(event) {
         "http://localhost:8080/aplicacao?grupo=administrativo";
       break;
 
-    case "usuario":
+    case "estoquista":
       window.location.href = "http://localhost:8080/aplicacao?grupo=usuario";
       break;
   }

@@ -8,6 +8,7 @@
       rel="stylesheet"
     />
     <link href="/css/index.css" rel="stylesheet" />
+    
     <title>Tela de usuários</title>
   </head>
   <body style="width: 100%; height: 100%; background-color: #001f3f">
@@ -26,7 +27,7 @@
               <th class="text-center" scope="col">Grupo</th>
               <th class="text-center" scope="col">Editar</th>
               <th class="text-center" scope="col">Ativar/Desativar</th>
-              <th><img class="suave-transition" src="/img/plus.png" style="width: 15px;" alt=""></th>
+              <th><img class="suave-transition" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" src="/img/plus.png" style="width: 15px;" alt=""></th>
             </tr>
           </thead>
           <tbody>
@@ -36,14 +37,105 @@
               <td class="text-center" th:text="${p.email}"></td>
               <td class="text-center" th:text="${p.status}"></td>
               <td class="text-center" th:text="${p.grupo}"></td>
-              <td class="text-center">Editar</td>
+              <td class="text-center" data-bs-toggle="modal" data-bs-target="#editarUsuario" >Editar</td>
               <td class="text-center" colspan="2">mudar</td>
             </tr>
           </tbody>
         </table>
       </section>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/jss/UsuariosAdm.js"></script>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form id="cadastra">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Cadastro de Usuário</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" class="form-control" id="nome" placeholder="Digite o nome">
+          </div>
+          <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input type="text" class="form-control" id="cpf" placeholder="Digite o CPF">
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" id="email" placeholder="Digite o e-mail">
+          </div>
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" class="form-control" id="senha" placeholder="Digite a senha">
+          </div>
+          <div class="form-group">
+            <label for="confirmaSenha">Confirmar Senha</label>
+            <input type="password" class="form-control" id="confirmaSenha" placeholder="Confirme a senha">
+          </div>
+          <div class="form-group">
+            <label for="grupo">Grupo do Usuário</label>
+            <select class="form-control" id="grupo">
+              <option value="estoquista">Estoquista</option>
+              <option value="administrativo">Administrativo</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+    <div class="modal fade" id="editarUsuario" tabindex="-1" role="dialog" aria-labelledby="editarUsuarioTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form id="editaUsuarios">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarUsuarioLongTitle">Editar usuário</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nomeEdit">Nome</label>
+            <input type="text" class="form-control" id="nomeEdit" placeholder="Digite o nome">
+          </div>
+          <div class="form-group">
+            <label for="cpfEdit">CPF</label>
+            <input type="text" class="form-control" id="cpfEdit" placeholder="Digite o CPF">
+          </div>
+          <div class="form-group">
+            <label for="senhaEdit">Senha</label>
+            <input type="password" class="form-control" id="senhaEdit" placeholder="Digite a senha">
+          </div>
+          <div class="form-group">
+            <label for="confirmaSenhaEdit">Confirmar Senha</label>
+            <input type="password" class="form-control" id="confirmaSenhaEdit" placeholder="Confirme a senha">
+          </div>
+          <div class="form-group">
+            <label for="grupoEdit">Grupo do Usuário</label>
+            <select class="form-control" id="grupoEdit">
+              <option value="estoquista">Estoquista</option>
+              <option value="administrativo">Administrativo</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" id="enviarEditar" class="btn btn-primary">Editar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
   </body>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/jss/UsuariosAdm.js"></script>
 </html>

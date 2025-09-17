@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
-    List<Pessoa> findByEmailAndSenha(String email, String senha); // Alterado para buscar por email
+    List<Pessoa> findByEmailAndSenha(String email, String senha); 
 }
