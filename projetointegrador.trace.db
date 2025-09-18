@@ -10,3 +10,6 @@ INSERT INTO usuarios (CPF, EMAIL, GRUPO, NOME, SENHA, STATUS) VALUES
 ('45678901234', 'adm1@example.com', 'administrativo', 'ana', 'ana123', 'ativo'),
 ('56789012345', 'adm2@example.com', 'administrativo', 'carlos', 'carlos123', 'ativo'),
 ('67890123456', 'adm3@example.com', 'administrativo', 'beatriz', 'beatriz123', 'ativo') [42102-232]
+2025-09-17 17:43:01.047105-03:00 jdbc[27]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUTOS PRODUTO_IMAGENS [*]PESSOAS"; SQL statement:
+SELECT * FROM PRODUTOS PRODUTO_IMAGENS PESSOAS [42000-232]

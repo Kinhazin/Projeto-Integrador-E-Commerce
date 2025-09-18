@@ -20,4 +20,11 @@ public class HomeController {
     public String usuarios() {
         return "UsuariosAdm";
     }
+
+    @GetMapping("/products")
+    public String produtos() {
+        return "Produtos";
+    }
+
+    
 }

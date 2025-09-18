@@ -20,3 +20,34 @@ body {
 #botaoEditar:hover {
   cursor: pointer;
 }
+
+
+/* styles.css */
+.pager-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-info { font-size: .95rem; color: #444; }
+
+.pagination { display: flex; gap: .25rem; flex-wrap: wrap; }
+.pagination button {
+  appearance: none;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+  padding: .4rem .6rem;
+  border-radius: .4rem;
+  cursor: pointer;
+}
+.pagination button:hover { background: #f6f6f6; }
+.pagination button[disabled] {
+  opacity: .55; cursor: not-allowed; background: #fafafa;
+}
+.pagination .is-current {
+  background: #2563eb; color: #fff; border-color: #2563eb;
+}
