@@ -13,3 +13,54 @@ INSERT INTO usuarios (CPF, EMAIL, GRUPO, NOME, SENHA, STATUS) VALUES
 2025-09-17 17:43:01.047105-03:00 jdbc[27]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUTOS PRODUTO_IMAGENS [*]PESSOAS"; SQL statement:
 SELECT * FROM PRODUTOS PRODUTO_IMAGENS PESSOAS [42000-232]
+2025-09-18 18:01:17.861764-03:00 jdbc[25]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-232]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:217)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:134)
+	at org.h2.Driver.connect(Driver.java:59)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488)
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:752)
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:731)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 16 more
+2025-09-18 18:07:29.497378-03:00 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO produtos (nome, descricao, preco, quantidade_estoque, status) VALUES\000d\000a('Smartphone X', 'Smartphone com 128GB e câmera dupla', 2499.90, 50, 'ATIVO'),\000d\000a('Notebook Pro', 'Notebook 15"", 16GB RAM, SSD 512GB', 5999.00, 30, 'ATIVO'),\000d\000a('Fone Bluetooth', 'Fone sem fio com cancelamento de ruído', 399.90, 100, 'ATIVO'),\000d\000a('Smartwatch Fit', 'Relógio inteligente com monitor cardíaco', 899.00, 75, 'ATIVO'),\000d\000a('TV 55""', 'Smart TV 4K com HDR e Wi-Fi integrado', 3299.00, 20, 'ATIVO'),\000d\000a('Caixa de Som', 'Caixa de som portátil à prova d\\'água', 299.90, 120, 'ATIVO'),\000d\000a('Teclado Mecânico', 'Teclado gamer com iluminação RGB', 499.90, 60, 'ATIVO'),\000d\000a('Mouse Gamer', 'Mouse com botões programáveis', 199.90, 80, 'ATIVO'),\000d\000a('Câmera DSLR', 'Câmera profissional com lente 18-55mm', 3499.00, 15, 'ATIVO'),\000d\000a('Carregador Turbo', 'Carregador rápido 30W USB-C', 149.00, 200, 'ATIVO[*]');"; SQL statement:
+INSERT INTO produtos (nome, descricao, preco, quantidade_estoque, status) VALUES
+('Smartphone X', 'Smartphone com 128GB e câmera dupla', 2499.90, 50, 'ATIVO'),
+('Notebook Pro', 'Notebook 15", 16GB RAM, SSD 512GB', 5999.00, 30, 'ATIVO'),
+('Fone Bluetooth', 'Fone sem fio com cancelamento de ruído', 399.90, 100, 'ATIVO'),
+('Smartwatch Fit', 'Relógio inteligente com monitor cardíaco', 899.00, 75, 'ATIVO'),
+('TV 55"', 'Smart TV 4K com HDR e Wi-Fi integrado', 3299.00, 20, 'ATIVO'),
+('Caixa de Som', 'Caixa de som portátil à prova d\'água', 299.90, 120, 'ATIVO'),
+('Teclado Mecânico', 'Teclado gamer com iluminação RGB', 499.90, 60, 'ATIVO'),
+('Mouse Gamer', 'Mouse com botões programáveis', 199.90, 80, 'ATIVO'),
+('Câmera DSLR', 'Câmera profissional com lente 18-55mm', 3499.00, 15, 'ATIVO'),
+('Carregador Turbo', 'Carregador rápido 30W USB-C', 149.00, 200, 'ATIVO'); [42000-232]
+2025-09-18 18:07:57.866573-03:00 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PRODUTOS SELECT * FROM PRODUTOS"; expected "PREPARE"; SQL statement:
+PRODUTOS SELECT * FROM PRODUTOS [42001-232]
+2025-09-18 18:08:16.092444-03:00 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO produtos (nome, descricao, preco, quantidade_estoque, status) VALUES\000d\000a('Smartphone X', 'Smartphone com 128GB e câmera dupla', 2499.90, 50, 'ATIVO'),\000d\000a('Notebook Pro', 'Notebook 15"", 16GB RAM, SSD 512GB', 5999.00, 30, 'ATIVO'),\000d\000a('Fone Bluetooth', 'Fone sem fio com cancelamento de ruído', 399.90, 100, 'ATIVO'),\000d\000a('Smartwatch Fit', 'Relógio inteligente com monitor cardíaco', 899.00, 75, 'ATIVO'),\000d\000a('TV 55""', 'Smart TV 4K com HDR e Wi-Fi integrado', 3299.00, 20, 'ATIVO'),\000d\000a('Caixa de Som', 'Caixa de som portátil à prova d\\'água', 299.90, 120, 'ATIVO'),\000d\000a('Teclado Mecânico', 'Teclado gamer com iluminação RGB', 499.90, 60, 'ATIVO'),\000d\000a('Mouse Gamer', 'Mouse com botões programáveis', 199.90, 80, 'ATIVO'),\000d\000a('Câmera DSLR', 'Câmera profissional com lente 18-55mm', 3499.00, 15, 'ATIVO'),\000d\000a('Carregador Turbo', 'Carregador rápido 30W USB-C', 149.00, 200, 'ATIVO[*]');"; SQL statement:
+INSERT INTO produtos (nome, descricao, preco, quantidade_estoque, status) VALUES
+('Smartphone X', 'Smartphone com 128GB e câmera dupla', 2499.90, 50, 'ATIVO'),
+('Notebook Pro', 'Notebook 15", 16GB RAM, SSD 512GB', 5999.00, 30, 'ATIVO'),
+('Fone Bluetooth', 'Fone sem fio com cancelamento de ruído', 399.90, 100, 'ATIVO'),
+('Smartwatch Fit', 'Relógio inteligente com monitor cardíaco', 899.00, 75, 'ATIVO'),
+('TV 55"', 'Smart TV 4K com HDR e Wi-Fi integrado', 3299.00, 20, 'ATIVO'),
+('Caixa de Som', 'Caixa de som portátil à prova d\'água', 299.90, 120, 'ATIVO'),
+('Teclado Mecânico', 'Teclado gamer com iluminação RGB', 499.90, 60, 'ATIVO'),
+('Mouse Gamer', 'Mouse com botões programáveis', 199.90, 80, 'ATIVO'),
+('Câmera DSLR', 'Câmera profissional com lente 18-55mm', 3499.00, 15, 'ATIVO'),
+('Carregador Turbo', 'Carregador rápido 30W USB-C', 149.00, 200, 'ATIVO'); [42000-232]

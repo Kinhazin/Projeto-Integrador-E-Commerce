@@ -3,10 +3,14 @@ package br.senac.integrador.projeto.controller;
 import br.senac.integrador.projeto.model.Produto;
 import br.senac.integrador.projeto.model.ProdutoImagem;
 import br.senac.integrador.projeto.repository.ProdutoRepository;
+import br.senac.integrador.projeto.service.ProdutosService;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -17,6 +21,9 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private ProdutosService imagemService;
 
     // Listar todos
     @GetMapping
@@ -130,7 +137,8 @@ public class ProdutoController {
 
         for (int i = 0; i < urls.size(); i++) {
             String url = urls.get(i);
-            if (url == null || url.isBlank()) continue;
+            if (url == null || url.isBlank())
+                continue;
 
             boolean principal = !jaTemPrincipal && i == 0; // define a primeira como principal se ainda não houver
             ProdutoImagem img = new ProdutoImagem(url, null, ordemBase + i, principal);
@@ -154,4 +162,64 @@ public class ProdutoController {
         produto.removeImagem(imagem);
         return produtoRepository.save(produto);
     }
+
+    @PostMapping(value = "/com-imagens", consumes = "multipart/form-data")
+    @Transactional
+    public ResponseEntity<Produto> criarProdutoComImagens(
+            @RequestParam String nome,
+            @RequestParam Double avaliacao,
+            @RequestParam String descricao,
+            @RequestParam Double preco,
+            @RequestParam Integer quantidadeEstoque,
+            @RequestParam(required = false) List<MultipartFile> imagens) {
+        Produto produto = new Produto();
+        produto.setNome(nome);
+        produto.setAvaliacao(avaliacao);
+        produto.setDescricao(descricao);
+        produto.setPreco(preco);
+        produto.setQuantidadeEstoque(quantidadeEstoque);
+        produto.setStatus("ATIVO");
+
+        if (imagens != null && !imagens.isEmpty()) {
+            int ordem = 0;
+            boolean principalDefinido = false;
+
+            for (MultipartFile file : imagens) {
+                String url = imagemService.salvarImagem(file); // ✅ aqui está correto
+                boolean principal = !principalDefinido;
+                ProdutoImagem img = new ProdutoImagem(url, null, ordem++, principal);
+                produto.addImagem(img);
+                principalDefinido = true;
+            }
+        }
+
+        Produto salvo = produtoRepository.save(produto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    }
+
+    @PostMapping(value = "/com-imagens/{id}/adicionar", consumes = "multipart/form-data")
+    @Transactional
+    public ResponseEntity<?> adicionarImagensAoProduto(
+            @PathVariable Long id,
+            @RequestParam(required = false) List<MultipartFile> imagens) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+
+        if (imagens != null && !imagens.isEmpty()) {
+            int ordem = produto.getImagens().size();
+            boolean principalDefinido = produto.getImagens().stream().anyMatch(ProdutoImagem::getPrincipal);
+
+            for (MultipartFile file : imagens) {
+                String url = imagemService.salvarImagem(file);
+                boolean principal = !principalDefinido;
+                ProdutoImagem img = new ProdutoImagem(url, null, ordem++, principal);
+                produto.addImagem(img);
+                principalDefinido = true;
+            }
+        }
+
+        produtoRepository.save(produto);
+        return ResponseEntity.ok().build();
+    }
+
 }

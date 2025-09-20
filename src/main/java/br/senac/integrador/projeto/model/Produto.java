@@ -1,5 +1,6 @@
 package br.senac.integrador.projeto.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +27,15 @@ public class Produto {
     @Column(nullable = false)
     private Integer quantidadeEstoque;
 
-    // ✅ Status como String
     @Column(nullable = false, length = 20)
     private String status = "ATIVO";
 
-    // ✅ Relacionamento com imagens
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<ProdutoImagem> imagens = new ArrayList<>();
 
     public Produto() {}
 
-    // Métodos utilitários para manter consistência
     public void addImagem(ProdutoImagem imagem) {
         imagens.add(imagem);
         imagem.setProduto(this);
