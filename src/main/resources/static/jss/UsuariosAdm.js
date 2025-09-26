@@ -30,18 +30,18 @@ function renderizarTabela(dados) {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td class="text-center">${p.id}</td>
-      <td class="text-center">${p.nome}</td>
-      <td class="text-center">${p.email}</td>
-      <td class="text-center">${p.status}</td>
-      <td class="text-center">${p.grupo}</td>
-      <td class="botaoEditar text-center" id="${
-        p.id
-      }" data-bs-toggle="modal" data-bs-target="#editarUsuario">Editar</td>
-      <td class="text-center" colspan="2">${
-        p.status == "ativo" ? "inativar" : "ativar"
-      }</td>
-    `;
+    <td class="text-center">${p.id}</td>
+    <td class="text-center">${p.nome}</td>
+    <td class="text-center">${p.email}</td>
+    <td class="text-center">${p.status}</td>
+    <td class="text-center">${p.grupo}</td>
+    <td class="botaoEditar text-center" id="${
+      p.id
+    }" data-bs-toggle="modal" data-bs-target="#editarUsuario">Editar</td>
+    <td class="text-center celula-status" data-id="${p.id}" colspan="2">
+      ${p.status === "ativo" ? "inativar" : "ativar"}
+    </td>
+  `;
 
     tbody.appendChild(tr);
   });
@@ -60,6 +60,7 @@ function renderizarTabela(dados) {
       document.getElementById("confirmaSenhaEdit").value = usuario.senha;
     });
   });
+  adicionarEventosStatus();
 }
 
 const enviarEditar = document.getElementById("enviarEditar");
@@ -186,6 +187,34 @@ async function enviarDados(event) {
   } catch (erro) {
     alert(erro.message);
   }
+}
+
+function adicionarEventosStatus() {
+  const celulasStatus = document.querySelectorAll(".celula-status");
+  celulasStatus.forEach((celula) => {
+    celula.addEventListener("click", async () => {
+      if (confirm("Deseja mudar o status do usuário?")) {
+        const id = celula.dataset.id;
+
+        try {
+          const resp = await fetch(`/pessoas/${id}/status`, {
+            method: "PUT",
+          });
+
+          if (!resp.ok) {
+            const erro = await resp.text();
+            throw new Error(erro);
+          }
+
+          // Atualiza a tabela após a alteração
+          await atualizarDadosDaTela();
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao alterar status do usuário.");
+        }
+      }
+    });
+  });
 }
 
 window.onload = function () {

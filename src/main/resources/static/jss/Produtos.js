@@ -4,8 +4,38 @@ let todosProdutos = [];
 let termoBusca = "";
 let produtoIdRecemCriado = null;
 let produtoIdEmEdicao = null;
+let grupo;
 
 const API_URL = "/produtos";
+window.onload = function () {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  grupo = urlParams.get('grupo')?.trim();
+  
+  }
+
+function desativarFuncoesAdministrativas() {
+  if (grupo === "usuario") {
+    const adicionar = document.querySelector("#adicionar_novo_produto");
+    const ativarDesativar = document.querySelectorAll(".td-ativar-desativar");
+    document.querySelector('#editar-nome').setAttribute('readonly', 'true')
+    document.querySelector('#editar-avaliacao').setAttribute('readonly', 'true')
+    document.querySelector('#editar-preco').setAttribute('readonly', 'true')
+    document.querySelector('#editar-descricao').setAttribute('readonly', 'true')
+    document.querySelector('#editar-imagens').setAttribute('hidden', 'true')
+    document.querySelector('#galeria_das_imagens').setAttribute('hidden', 'true')
+    document.querySelector('#adicionardor_de_imagens').setAttribute('hidden', 'true')
+    
+    
+ativarDesativar.forEach(el => {
+      el.style.display = "none";
+    });
+
+    if (adicionar) {
+      adicionar.style.display = "none";
+    }
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   carregarTabela();
@@ -20,6 +50,7 @@ async function carregarTabela() {
   try {
     todosProdutos = await buscarProdutos();
     renderizarPagina();
+    desativarFuncoesAdministrativas()
   } catch (err) {
     console.error(err);
     setMensagem(
@@ -103,21 +134,22 @@ function renderizarLinhas(tbody, produtos) {
 
     // Opções: Ativar/Desativar
     const ativo = status === "ATIVO";
-
-    tr.appendChild(
-      tdAcao(
+    const tdAtivarDesativar = tdAcao(
         ativo ? "Desativar" : "Ativar",
         ativo ? "btn-outline-danger" : "btn-outline-success",
         () => {
           toggleStatusProduto(id, status);
         }
       )
+    tr.appendChild(
+      tdAtivarDesativar
     );
-
+    tdAtivarDesativar.classList.add("td-ativar-desativar");
     frag.appendChild(tr);
   }
 
   tbody.appendChild(frag);
+  desativarFuncoesAdministrativas()
 }
 
 /* ============================

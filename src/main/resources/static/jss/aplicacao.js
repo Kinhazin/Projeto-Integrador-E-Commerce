@@ -1,76 +1,75 @@
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const grupo = urlParams.get('grupo').trim(); 
-const usuarios = document.getElementById("usuarios");
-const pedidos = document.getElementById("pedidos");
-const produtos = document.getElementById("produtos")
-
 window.onload = function () {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const grupo = urlParams.get('grupo')?.trim();
 
+  const usuarios = document.getElementById("usuarios");
+  const pedidos = document.getElementById("pedidos");
+  const produtos = document.getElementById("produtos");
 
-  console.log(grupo)
+  console.log(grupo);
 
-  if (grupo == "usuario") {
+  if (grupo === "usuario") {
     usuarios.removeAttribute('class');
-    pedidos.removeAttribute('class')
+    pedidos.removeAttribute('class');
     usuarios.style.display = "none";
     pedidos.style.display = "none";
   }
 
-};
+  usuarios.addEventListener('click', () => {
+    window.location.href = "http://localhost:8080/pessoashtml";
+  });
 
-document.getElementById("form-cadastro-produto").addEventListener("submit", async (e) => {
-  e.preventDefault();
+  if(grupo == "administrativo"){
+    produtos.addEventListener('click', () => {
+    window.location.href = "http://localhost:8080/products";
+  });
+  }else{
+    produtos.addEventListener('click', () => {
+    window.location.href = "http://localhost:8080/products?grupo=usuario";
+    })
+}
 
-  const nome = document.getElementById("nome").value.trim();
-  const avaliacao = parseFloat(document.getElementById("avaliacao").value);
-  const descricao = document.getElementById("descricao").value.trim();
-  const preco = parseFloat(document.getElementById("preco").value);
-  const estoque = parseInt(document.getElementById("estoque").value);
-  const imagens = document.getElementById("imagens").files;
+  document.getElementById("form-cadastro-produto").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const formData = new FormData();
-  formData.append("nome", nome);
-  formData.append("avaliacao", avaliacao);
-  formData.append("descricao", descricao);
-  formData.append("preco", preco);
-  formData.append("quantidadeEstoque", estoque);
+    const nome = document.getElementById("nome").value.trim();
+    const avaliacao = parseFloat(document.getElementById("avaliacao").value);
+    const descricao = document.getElementById("descricao").value.trim();
+    const preco = parseFloat(document.getElementById("preco").value);
+    const estoque = parseInt(document.getElementById("estoque").value);
+    const imagens = document.getElementById("imagens").files;
 
-  for (let i = 0; i < imagens.length; i++) {
-    formData.append("imagens", imagens[i]);
-  }
+    const formData = new FormData();
+    formData.append("nome", nome);
+    formData.append("avaliacao", avaliacao);
+    formData.append("descricao", descricao);
+    formData.append("preco", preco);
+    formData.append("quantidadeEstoque", estoque);
 
-  try {
-    const resp = await fetch("/produtos/com-imagens", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!resp.ok) {
-      const erro = await resp.text();
-      throw new Error(`Erro ao cadastrar produto: ${erro}`);
+    for (let i = 0; i < imagens.length; i++) {
+      formData.append("imagens", imagens[i]);
     }
 
-    // Fecha a modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById("exampleModalCenter"));
-    modal.hide();
+    try {
+      const resp = await fetch("/produtos/com-imagens", {
+        method: "POST",
+        body: formData,
+      });
 
-    // Limpa o formulário
-    e.target.reset();
+      if (!resp.ok) {
+        const erro = await resp.text();
+        throw new Error(`Erro ao cadastrar produto: ${erro}`);
+      }
 
-    // Recarrega a tabela
-    carregarTabela();
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao cadastrar produto. Verifique os dados e tente novamente.");
-  }
-});
+      const modal = bootstrap.Modal.getInstance(document.getElementById("exampleModalCenter"));
+      modal.hide();
 
-
-usuarios.addEventListener('click', ()=>{
-  window.location.href = "http://localhost:8080/pessoashtml";
-})
-
-produtos.addEventListener('click', ()=>{
-  window.location.href = "http://localhost:8080/products";
-})
+      e.target.reset();
+      carregarTabela();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao cadastrar produto. Verifique os dados e tente novamente.");
+    }
+  });
+};
