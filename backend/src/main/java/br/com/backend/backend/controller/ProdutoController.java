@@ -1,0 +1,91 @@
+package br.com.backend.backend.controller;
+
+import br.com.backend.backend.model.Produto;
+import br.com.backend.backend.model.ProdutoImagem;
+import br.com.backend.backend.repository.ProdutoRepository;
+import br.com.backend.backend.service.ProdutosService;
+
+import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/produtos")
+public class ProdutoController {
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
+    
+    @Autowired
+    private ProdutosService ProdutosService;
+
+    // Listar todos
+    @GetMapping
+    public List<Produto> listarProdutos() {
+        return produtoRepository.findAll();
+    }
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Produto> criarProdutoComUpload(
+            @RequestParam("nome") String nome,
+            @RequestParam("descricao") String descricao,
+            @RequestParam("preco") Double preco,
+            @RequestParam("avaliacao") Double avaliacao,
+            @RequestParam("quantidadeEstoque") Integer quantidadeEstoque,
+            @RequestParam("status") String status,
+            @RequestParam("imagens") List<MultipartFile> imagens) {
+
+        Produto produto = new Produto();
+        produto.setNome(nome);
+        produto.setDescricao(descricao);
+        produto.setPreco(preco);
+        produto.setAvaliacao(avaliacao);
+        produto.setQuantidadeEstoque(quantidadeEstoque);
+        produto.setStatus(status);
+
+        // Salva cada imagem e gera a URL
+        for (MultipartFile arquivo : imagens) {
+            String url = ProdutosService.salvarArquivo(arquivo);
+            ProdutoImagem img = new ProdutoImagem(url, null, 0, false);
+            produto.addImagem(img);
+        }
+
+        Produto salvo = produtoRepository.save(produto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    }
+
+    // Atualizar produto
+    @PutMapping("/{id}")
+    public Produto atualizarProduto(@PathVariable Long id, @RequestBody Produto produtoAtualizado) {
+        return produtoRepository.findById(id)
+                .map(produto -> {
+                    produto.setNome(produtoAtualizado.getNome());
+                    produto.setAvaliacao(produtoAtualizado.getAvaliacao());
+                    produto.setDescricao(produtoAtualizado.getDescricao());
+                    produto.setPreco(produtoAtualizado.getPreco());
+                    produto.setQuantidadeEstoque(produtoAtualizado.getQuantidadeEstoque());
+                    produto.setStatus(produtoAtualizado.getStatus());
+                    return produtoRepository.save(produto);
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+    }
+
+    // Atualizar apenas o status (PATCH)
+    @PatchMapping("/{id}/status")
+    public Produto atualizarStatus(@PathVariable Long id) {
+        return produtoRepository.findById(id)
+                .map(produto -> {
+                    String novoStatus = produto.getStatus().equalsIgnoreCase("ativo") ? "inativo" : "ativo";
+                    produto.setStatus(novoStatus);
+                    return produtoRepository.save(produto);
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+    }
+
+}
