@@ -2,10 +2,10 @@ import { Modal, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos }) {
+function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos, grupo }) {
     const metodo = useForm();
     const [saving, setSaving] = useState(false);
-
+    const propsSomenteLeitura = grupo !== "adm" ? { readOnly: true } : {};
     const API_BASE = "http://localhost:8080/api";
 
         const ENDPOINTS = {
@@ -170,6 +170,7 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos }) {
                                 maxLength="200"
                                 required
                                 {...metodo.register("nome")}
+                                {...propsSomenteLeitura}
                             />
                         </Form.Group>
 
@@ -182,6 +183,7 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos }) {
                                 step="0.5"
                                 required
                                 {...metodo.register("avaliacao")}
+                                {...propsSomenteLeitura}
                             />
                         </Form.Group>
 
@@ -193,6 +195,7 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos }) {
                                 min="0"
                                 required
                                 {...metodo.register("preco")}
+                                {...propsSomenteLeitura}
                             />
                         </Form.Group>
                     </div>
@@ -205,6 +208,7 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos }) {
                             maxLength="2000"
                             required
                             {...metodo.register("descricao")}
+                            {...propsSomenteLeitura}
                         />
                     </Form.Group>
 
@@ -226,6 +230,7 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos }) {
                                 multiple
                                 accept="image/*"
                                 {...metodo.register("imagens")}
+                                {...propsSomenteLeitura}
                             />
                         </Form.Group>
 
