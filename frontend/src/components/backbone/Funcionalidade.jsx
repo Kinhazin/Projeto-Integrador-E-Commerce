@@ -6,8 +6,8 @@ function Funcionalidade(props){
     return(
         <div
         onClick={() => navigate(props.rota? props.rota : '/backbone')} 
-        className={`d-${props.display} h-100 bg-dark rounded d-flex align-items-center justify-content-center suave-transition`} style={{width: '25%'}}>
-        <p className="fs-3">{props.texto}</p>
+        className={`d-${props.display} h-100 rounded d-flex align-items-center justify-content-center suave-transition`} style={{width: '25%', backgroundColor: '#34495E'}}>
+        <p className="fs-4">{props.texto}</p>
         </div>
     )
 }

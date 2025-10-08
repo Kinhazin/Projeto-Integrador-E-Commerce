@@ -44,3 +44,7 @@ a {
 .modal-header .btn-close {
   filter: invert(1) brightness(200%);
 }
+
+thead tr th{
+  color:#34495E !important;
+}

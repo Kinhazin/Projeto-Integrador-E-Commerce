@@ -1,38 +1,41 @@
 package br.com.backend.backend.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class ProdutosService {
 
+    private final Path uploadDir = Paths.get(System.getProperty("user.dir"), "uploads");
+
     public String salvarArquivo(MultipartFile arquivo) {
         try {
-            String pastaUploads = System.getProperty("user.dir") + "/uploads/";
-
-            File pasta = new File(pastaUploads);
-            if (!pasta.exists()) {
-                pasta.mkdirs();
+            if (arquivo == null || arquivo.isEmpty()) {
+                throw new IllegalArgumentException("Arquivo vazio ou inexistente.");
             }
 
-            String nomeArquivo = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
-            Path caminho = Paths.get(pastaUploads + nomeArquivo);
+            Files.createDirectories(uploadDir);
 
-            Files.copy(arquivo.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
+            String original = StringUtils.cleanPath(Objects.requireNonNull(arquivo.getOriginalFilename()));
+            String nomeArquivo = UUID.randomUUID() + "_" + original;
 
-            return "http://localhost:8080/uploads/" + nomeArquivo;
+            Path destino = uploadDir.resolve(nomeArquivo);
+
+            try (InputStream is = arquivo.getInputStream()) {
+                Files.copy(is, destino, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            return "/uploads/" + nomeArquivo;
 
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao salvar arquivo: " + e.getMessage());
+            throw new RuntimeException("Erro ao salvar arquivo: " + e.getMessage(), e);
         }
     }
-
 }

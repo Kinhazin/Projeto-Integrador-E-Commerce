@@ -1,7 +1,7 @@
 import Funcionalidade from "../components/backbone/Funcionalidade";
 import { useLocation } from "react-router-dom";
 
-function Backbone(props) {
+function Backbone() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const grupo = queryParams.get('grupo');
@@ -9,15 +9,14 @@ function Backbone(props) {
 
   return (
     <>
-      <div style={{ backgroundColor: '#1c1f23' }} className="h-75 d-flex justify-content-around align-items-center text-light flex-column">
-        <h1 >Backbone</h1>
+      <div style={{ backgroundColor: '#EDEFF2', minHeight: '100%', minWidth: '100%' }} className="h-75 d-flex justify-content-around align-items-center text-light flex-column">
         <section className="d-flex justify-content-around align-items-center" style={{ width: '90%', height: '20vh' }}>
           <Funcionalidade texto="Produtos" rota={grupo == "adm" ? '/produtos?grupo=adm' : '/produtos'} />
           <Funcionalidade display={display} texto="Usuários" rota={"/pessoas"} />
           <Funcionalidade display={display} texto="Pedidos" />
         </section>
       </div>
-      <div style={{ backgroundColor: '#1c1f23' }} className="h-25 d-flex justify-content-around align-items-center text-light flex-column"></div>
+
     </>
   )
 }

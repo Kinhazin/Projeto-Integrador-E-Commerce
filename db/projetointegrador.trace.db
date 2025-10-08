@@ -1,0 +1,72 @@
+2025-10-06 17:36:54.990086-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PESSOA" not found; SQL statement:
+INSERT INTO pessoa (id, cpf, email, grupo, nome, senha, status) VALUES
+(1, '11122233344', 'joao.silva@email.com', 'administrativo', 'joao silva', 'senha123', 'ativo') [42102-232]
+2025-10-06 17:36:55.006214-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PESSOA" not found; SQL statement:
+INSERT INTO pessoa (id, cpf, email, grupo, nome, senha, status) VALUES
+(2, '55566677788', 'maria.souza@email.com', 'estoquista', 'maria souza', 'senha456', 'ativo') [42102-232]
+2025-10-06 17:36:55.023099-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PESSOA" not found; SQL statement:
+INSERT INTO pessoa (id, cpf, email, grupo, nome, senha, status) VALUES
+(3, '99900011122', 'carlos.pereira@email.com', 'administrativo', 'carlos pereira', 'senha789', 'inativo') [42102-232]
+2025-10-06 17:38:35.246380-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(1, 4.5, 'Teclado mecânico de alta precisão com iluminação RGB.', 'teclado gamer', 250.00, 50, 'ativo') [42102-232]
+2025-10-06 17:38:35.248373-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(2, 5.0, 'Mouse ergonômico sem fio com sensor de alta sensibilidade.', 'mouse sem fio', 120.50, 100, 'ativo') [42102-232]
+2025-10-06 17:38:35.249372-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(3, 3.5, 'Headset com microfone ajustável e som estéreo.', 'headset estéreo', 150.00, 30, 'ativo') [42102-232]
+2025-10-06 17:38:35.251372-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(4, 4.0, 'Monitor Full HD de 24 polegadas com taxa de atualização de 75Hz.', 'monitor 24 pol', 850.00, 25, 'ativo') [42102-232]
+2025-10-06 17:38:35.252402-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(5, 3.0, 'Webcam com resolução de vídeo de 1080p.', 'webcam 1080p', 90.00, 75, 'ativo') [42102-232]
+2025-10-06 17:38:35.254362-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(6, 4.5, 'Cadeira de escritório com ajuste de altura e apoio lombar.', 'cadeira de escritório', 450.00, 15, 'ativo') [42102-232]
+2025-10-06 17:38:35.255359-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(7, 2.0, 'Mouse pad de grandes dimensões com superfície antiderrapante.', 'mouse pad grande', 40.50, 120, 'inativo') [42102-232]
+2025-10-06 17:38:35.256356-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(8, 5.0, 'Notebook ultrafino com processador de última geração.', 'notebook ultrafino', 3500.00, 10, 'ativo') [42102-232]
+2025-10-06 17:38:35.257352-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(9, 4.0, 'Caixa de som bluetooth com som potente e bateria de longa duração.', 'caixa de som bluetooth', 200.00, 80, 'ativo') [42102-232]
+2025-10-06 17:38:35.259346-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(10, 3.0, 'Impressora multifuncional a jato de tinta com Wi-Fi.', 'impressora multifuncional', 300.00, 20, 'inativo') [42102-232]
+2025-10-06 17:38:35.260350-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(11, 4.5, 'Carregador portátil de alta capacidade para smartphones.', 'carregador portátil', 75.50, 200, 'ativo') [42102-232]
+2025-10-06 17:38:35.261338-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(12, 5.0, 'Pen drive de 64GB com alta velocidade de transferência.', 'pen drive 64gb', 50.00, 150, 'ativo') [42102-232]
+2025-10-06 17:38:35.262829-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(13, 2.5, 'Adaptador USB para HDMI, para conectar dispositivos à TV.', 'adaptador hdmi', 60.00, 45, 'ativo') [42102-232]
+2025-10-06 17:38:35.263954-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(14, 3.5, 'Cabo USB-C de 2 metros com reforço de nylon.', 'cabo usb-c', 30.50, 180, 'ativo') [42102-232]
+2025-10-06 17:38:35.265459-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
+(15, 4.0, 'Suporte de notebook ajustável e portátil.', 'suporte notebook', 80.00, 60, 'ativo') [42102-232]

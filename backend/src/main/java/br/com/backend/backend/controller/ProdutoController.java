@@ -9,19 +9,21 @@ import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
-    
+
     @Autowired
     private ProdutosService ProdutosService;
 
@@ -86,6 +88,26 @@ public class ProdutoController {
                     return produtoRepository.save(produto);
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+    }
+
+    @PostMapping(value = "/com-imagens/{id}/adicionar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public Produto adicionarImagens(
+            @PathVariable Long id,
+            @RequestParam("imagens") List<MultipartFile> imagens) {
+
+        return produtoRepository.findById(id)
+                .map(produto -> {
+                    for (MultipartFile arquivo : imagens) {
+                        
+                        String url = ProdutosService.salvarArquivo(arquivo);
+                        ProdutoImagem img = new ProdutoImagem(url, null, 0, false);
+                        produto.addImagem(img); 
+                    }
+                    return produtoRepository.save(produto);
+                })
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Produto não encontrado"));
     }
 
 }

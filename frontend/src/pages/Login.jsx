@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
@@ -41,18 +41,19 @@ function Login() {
 
 
     return (
-        <div style={{ backgroundColor: '#1c1f23' }} className="min-vh-100 w-100 d-flex justify-content-center align-items-center  text-light">
+        <div style={{ backgroundColor: '#EDEFF2', color:'#F5F7FA' }} className="min-vh-100 w-100 d-flex justify-content-center align-items-center">
             <section style={{ height: '75vh' }} className="w-100 d-flex flex-column justify-content-center align-items-center">
-                <div style={{ width: '25vw', height: '50vh' }} className='rounded bg-dark d-flex flex-column justify-content-center align-items-center'>
+                <div style={{ width: '30vw', height: 'auto', backgroundColor:'#34495E ' }} className='rounded d-flex flex-column justify-content-center align-items-center p-2 py-4 '>
                     <h1 className='fs-2'>Login</h1>
-                    <div style={{ width: '80%', height: '60%' }} className='d-flex flex-column align-items-start justify-content-center gap-2'>
+                    <div style={{ width: '80%', height: 'auto' }} className='d-flex flex-column align-items-start justify-content-center gap-2'>
                         <form onSubmit={handleSubmit(onSubmit)} className='w-100 h-100'>
                             <Form.Group className='w-100 p-0 m-0 d-flex flex-column justify-content-start align-items-start' >
-                                <Form.Label className='mt-3 fs-5 p-0 mb-1 m-0'>Email</Form.Label>
+                                <Form.Label className='fw-semibold mt-3 p-0 mb-1 m-0'>Email</Form.Label>
                                 <Form.Control {...register("email")} className=' me-3 w-100 m-0' type="email" placeholder="Digite seu email" />
-                                <Form.Label className='mt-3 fs-5 m-0 mb-1'>Senha</Form.Label>
+                                <Form.Label className=' fw-semibold mt-3 m-0 mb-1'>Senha</Form.Label>
                                 <Form.Control {...register("senha")} className=' me-3 w-100 m-0' type="password" placeholder="Digite sua senha" />
-                                <Button type='submit' className='mt-5 w-100'>Login</Button>
+                                <Button style={{backgroundColor: '#EDEFF2'}} type='submit' className='mt-5 w-100'><p className='p-0 m-0 fw-semibold' style={{color: '#34495E'}}>Login</p></Button>
+                                <div></div>
                             </Form.Group>
                         </form>
                     </div>

@@ -92,7 +92,7 @@ function ModalEditarCliente(props) {
     return (
         <Modal show={props.show} onHide={props.onHide} centered size="lg">
             <Modal.Header
-                style={{ backgroundColor: "#0B0E10" }}
+                style={{ backgroundColor: "#34495E" }}
                 className="text-white border-none"
                 closeButton
             >
@@ -101,7 +101,7 @@ function ModalEditarCliente(props) {
 
             <Modal.Body
                 className="w-100 text-white d-flex flex-column align-content-center justify-content-center"
-                style={{ backgroundColor: "#191A1C" }}
+                style={{ backgroundColor: "#EDEFF2" }}
             >
                 <Form
                     id="editaCliente"
@@ -110,7 +110,7 @@ function ModalEditarCliente(props) {
                 >
                     <div className="d-flex gap-3 col-12">
                         <Form.Group className="mb-3 col-5" controlId="nome">
-                            <Form.Label>Nome</Form.Label>
+                            <Form.Label style={{color: '#34495E'}}>Nome</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Digite o nome"
@@ -120,7 +120,7 @@ function ModalEditarCliente(props) {
                         </Form.Group>
 
                         <Form.Group className="mb-3 col-5" controlId="cpf">
-                            <Form.Label>CPF</Form.Label>
+                            <Form.Label style={{color: '#34495E'}}>CPF</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Digite o CPF"
@@ -131,7 +131,7 @@ function ModalEditarCliente(props) {
                     </div>
 
                     <Form.Group className="mb-3 col-5" controlId="email">
-                        <Form.Label>E-mail</Form.Label>
+                        <Form.Label style={{color: '#34495E'}}>E-mail</Form.Label>
                         <Form.Control
                             type="email"
                             placeholder="Digite o e-mail"
@@ -142,7 +142,7 @@ function ModalEditarCliente(props) {
 
                     <div className="d-flex gap-3 col-12">
                         <Form.Group className="mb-3 col-5" controlId="senha">
-                            <Form.Label>Senha</Form.Label>
+                            <Form.Label style={{color: '#34495E'}}>Senha</Form.Label>
                             <Form.Control
                                 type="password"
                                 placeholder="Digite a nova senha (opcional)"
@@ -151,7 +151,7 @@ function ModalEditarCliente(props) {
                         </Form.Group>
 
                         <Form.Group className="mb-3 col-5" controlId="confirmaSenha">
-                            <Form.Label>Confirmar Senha</Form.Label>
+                            <Form.Label style={{color: '#34495E'}}>Confirmar Senha</Form.Label>
                             <Form.Control
                                 type="password"
                                 placeholder="Confirme a nova senha"
@@ -161,7 +161,7 @@ function ModalEditarCliente(props) {
                     </div>
 
                     <Form.Group className="mb-3 col-5" controlId="grupo">
-                        <Form.Label>Grupo do Usuário</Form.Label>
+                        <Form.Label style={{color: '#34495E'}}>Grupo do Usuário</Form.Label>
                         <Form.Select {...metodo.register("grupo")}>
                             <option value="estoquista">Estoquista</option>
                             <option value="administrativo">Administrativo</option>
@@ -179,7 +179,7 @@ function ModalEditarCliente(props) {
                         form="editaCliente"
                         type="submit"
                         className="btn text-white col-2"
-                        style={{ backgroundColor: "#313132" }}
+                        style={{ backgroundColor: "#34495E" }}
                     >
                         Salvar
                     </button>
