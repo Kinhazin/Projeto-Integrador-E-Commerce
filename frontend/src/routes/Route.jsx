@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Backbone from '../pages/Backbone';
-import Pessoas from '../pages/Pessoas';
 import Login from '../pages/Login';
+import Pessoas from '../pages/Pessoas';
+import Backbone from '../pages/Backbone';
 import Produtos from '../pages/Produtos';
+import HomePage from '../pages/HomePage';
 
 function App() {
     return (
@@ -11,7 +12,8 @@ function App() {
                 <Route path="/" element={<Login />} />
                 <Route path="/backbone" element={<Backbone />} />
                 <Route path="/pessoas" element={<Pessoas />} />
-                <Route path="/produtos" element={<Produtos />} />
+                <Route path="/produtos" element={<Produtos />}/>
+                <Route path="/home" element={<HomePage />}/>
             </Routes>
         </BrowserRouter>
     );
