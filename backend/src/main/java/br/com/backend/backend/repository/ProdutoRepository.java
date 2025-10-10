@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import br.com.backend.backend.model.Produto;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
@@ -13,4 +14,6 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     List<Produto> findByStatus(String status);
     List<Produto> findByPrecoLessThanEqual(Double preco);
     List<Produto> findByQuantidadeEstoqueGreaterThan(Integer quantidade);
+
+
 }

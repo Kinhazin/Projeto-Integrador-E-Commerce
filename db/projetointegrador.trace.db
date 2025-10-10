@@ -70,3 +70,12 @@ INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, 
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
 INSERT INTO produto (id, avaliacao, descricao, nome, preco, quantidade_estoque, status) VALUES
 (15, 4.0, 'Suporte de notebook ajustável e portátil.', 'suporte notebook', 80.00, 60, 'ativo') [42102-232]
+2025-10-09 15:19:21.153792-03:00 jdbc[43]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+delete from produto where d > 11 [42102-232]
+2025-10-09 15:19:22.709131-03:00 jdbc[43]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+delete from produto where id > 11 [42102-232]
+2025-10-09 15:19:27.895118-03:00 jdbc[43]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTO" not found; SQL statement:
+delete from produto where id > 11 [42102-232]

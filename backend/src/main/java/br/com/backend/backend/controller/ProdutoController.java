@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -108,6 +109,11 @@ public class ProdutoController {
                 })
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Produto não encontrado"));
+    }
+
+     @GetMapping("/{id}")
+    public Optional<Produto> acharProId(@RequestParam("id") Long id) {
+        return produtoRepository.findById(id);
     }
 
 }

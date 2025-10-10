@@ -28,7 +28,7 @@ public class Produto {
     private Integer quantidadeEstoque;
 
     @Column(nullable = false, length = 20)
-    private String status = "ATIVO";
+    private String status = "ativo";
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference

@@ -1,19 +1,27 @@
 package br.com.backend.backend.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import br.com.backend.backend.model.Produto;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+import br.com.backend.backend.repository.ProdutoRepository;
 
 @Service
 public class ProdutosService {
 
     private final Path uploadDir = Paths.get(System.getProperty("user.dir"), "uploads");
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     public String salvarArquivo(MultipartFile arquivo) {
         try {
@@ -37,5 +45,12 @@ public class ProdutosService {
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar arquivo: " + e.getMessage(), e);
         }
+    }
+
+    public Produto buscarPorId(Long id) {
+        Optional<Produto> resultado = produtoRepository.findById(id);
+
+        // A forma correta de usar o Optional
+        return resultado.orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
     }
 }

@@ -35,8 +35,6 @@ function Login() {
             alert(error.message);
 
         }
-
-
     }
 
 

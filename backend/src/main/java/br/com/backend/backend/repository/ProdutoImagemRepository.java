@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProdutoImagemRepository extends JpaRepository<ProdutoImagem, Long> {
-
-    // Carrega a imagem e o produto junto (evita LAZY fora do contexto)
     @Query("SELECT pi FROM ProdutoImagem pi JOIN FETCH pi.produto WHERE pi.id = :id")
     Optional<ProdutoImagem> findByIdWithProduto(@Param("id") Long id);
 

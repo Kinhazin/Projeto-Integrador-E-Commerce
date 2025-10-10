@@ -67,7 +67,7 @@ public class ProdutoImagemService {
     }
 
     public void promoverOutraComoPrincipal(Long produtoId) {
-        imagemRepo.findFirstByProduto_IdOrderByOrdemAsc(produtoId).ifPresent(img -> {
+        imagemRepo.findByIdWithProduto(produtoId).ifPresent(img -> {
             img.setPrincipal(true);
             imagemRepo.save(img);
         });
