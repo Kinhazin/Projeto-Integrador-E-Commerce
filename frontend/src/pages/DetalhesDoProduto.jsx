@@ -9,28 +9,36 @@ function DetalhesDoProduto() {
     const avaliacao = queryParams.get("avaliacao");
     const nome = queryParams.get("nome");
     const descricao = queryParams.get("descricao");
+    const id = queryParams.get("id");
     
 
-        function adicionarCarrinho(produto) {
-        produto.quantidadeCarrinho = produto.quantidadeCarrinho ?? 1;
-        const produtoExiste = localStorage.getItem(produto.id)
-        if (produtoExiste != null) {
-            produto.quantidadeCarrinho += 1;
-            alert(`Mais um ${produto.nome} adicionado no carrinho`);
+
+    function adicionarCarrinho(produto) {
+        console.log(produto.id)
+        const itemExistenteString = localStorage.getItem(produto.id);
+        let itemParaSalvar;
+
+        if (itemExistenteString) {
+            const itemExistente = JSON.parse(itemExistenteString);
+            itemExistente.quantidadeCarrinho += 1;
+            itemParaSalvar = itemExistente;
+            alert(`Mais um ${produto.nome} foi adicionado ao carrinho!`);
         } else {
-            alert(`${produto.nome} adicionado ao carrinho`)
+            itemParaSalvar = { ...produto, quantidadeCarrinho: 1 };
+            alert(`${produto.nome} foi adicionado ao carrinho.`);
         }
-        const produtoString = JSON.stringify(produto);
-        localStorage.setItem(produto.id, produtoString);
-        console.log(localStorage.getItem(produto.id))
+
+        localStorage.setItem(String(itemParaSalvar.id), JSON.stringify(itemParaSalvar));
     }
+
 
    const  dados = {
         nome : nome,
         url  : url,
         preco : preco,
         avaliacao : avaliacao,
-        descricao : descricao
+        descricao : descricao,
+        id : id
     }
 
 
@@ -44,7 +52,7 @@ function DetalhesDoProduto() {
                             <img src={"http://localhost:8080" + url} className="w-100 h-100" alt="" />
                             <div className="w-100 d-flex justify-content-center">
                                 <button className="btn text-white w-75 mt-4" style={{backgroundColor: '#34495E'}}
-                                onClick={dados=>adicionarCarrinho(dados)}
+                                onClick={()=>adicionarCarrinho(dados)}
                                 >Comprar</button>
                             </div>
                         </div>
