@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos, grupo }) {
     const metodo = useForm();
     const [saving, setSaving] = useState(false);
-    const propsSomenteLeitura = grupo !== "adm" ? { readOnly: true } : {};
+    const propsSomenteLeitura = grupo !== "administrativo" ? { readOnly: true } : {};
     const API_BASE = "http://localhost:8080/api";
 
         const ENDPOINTS = {

@@ -25,8 +25,8 @@ function Login() {
                     if (pessoa[0].status !== "ativo") {
                         throw new Error('Usuário inativo. Entre em contato com o administrador.');
                     }
-                    const url = pessoa[0].grupo == "administrativo" ? '/backbone?grupo=adm' : '/backbone?grupo=ext';
-                    navigate(url);
+                    const grupo = pessoa[0].grupo;
+                    navigate('backbone', {state: {grupo : grupo}});
                 } else {
                     throw new Error('Email ou senha incorretos.');
                 }
