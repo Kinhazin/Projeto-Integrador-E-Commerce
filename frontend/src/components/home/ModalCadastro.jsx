@@ -6,6 +6,8 @@ import { useForm, useWatch } from "react-hook-form";
 import { FormProvider } from "react-hook-form";
 import CadastroEndereco from "./CadastroEndereco";
 import CadastroPessoa from "./CadastroPessoa";
+import { useEffect } from "react";
+
 function ModalCadastro(props) {
   const metodos = useForm();
 
@@ -14,7 +16,36 @@ function ModalCadastro(props) {
     name: "utilizarIgual",
   });
 
-  const handleSubmit = async (data) => {
+  const { usuario } = props;
+  const propsSomenteLeitura = usuario !== undefined ? { readOnly: true } : {};
+
+  const criarUsuario = async (data) => {
+    function validarCPF(cpf) {
+      cpf = cpf.replace(/[^\d]+/g, "");
+      if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+      let soma = 0;
+      for (let i = 0; i < 9; i++) {
+        soma += parseInt(cpf.charAt(i)) * (10 - i);
+      }
+      let resto = 11 - (soma % 11);
+      if (resto === 10 || resto === 11) resto = 0;
+      if (resto !== parseInt(cpf.charAt(9))) return false;
+
+      soma = 0;
+      for (let i = 0; i < 10; i++) {
+        soma += parseInt(cpf.charAt(i)) * (11 - i);
+      }
+      resto = 11 - (soma % 11);
+      if (resto === 10 || resto === 11) resto = 0;
+      return resto === parseInt(cpf.charAt(10));
+    }
+
+    if (!validarCPF(data.cpf)) {
+      alert("CPF INVÁLIDO");
+      throw new Error("Error");
+    }
+
     const pessoa = {
       nome: data.nome + " " + data.sobrenome,
       cpf: data.cpf,
@@ -25,10 +56,10 @@ function ModalCadastro(props) {
       status: "ativo",
       grupo: "cliente",
     };
+
     const texto = utilizar ? "faturamento" : "entrega e faturamento";
     try {
       const response = await fetch("http://localhost:8080/api/pessoas", {
-
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -36,7 +67,6 @@ function ModalCadastro(props) {
         body: JSON.stringify(pessoa),
       });
       if (response.ok) {
-
         const url = `http://localhost:8080/api/pessoas/buscar?email=${encodeURIComponent(
           data.email
         )}&senha=${encodeURIComponent(data.senha)}`;
@@ -108,14 +138,54 @@ function ModalCadastro(props) {
             throw new Error(errorMessage);
           }
         }
+        props.onHide();
         alert("Adicionado com sucesso");
       }
     } catch (erro) {
-      alert('erro ao adicionar: ' + erro.message);
+      alert("erro ao adicionar: " + erro.message);
       console.log(erro.message);
     }
     console.log(pessoa);
   };
+
+  const atualizarUsuario = async (data) => {
+    const pessoa = {
+      nome: data.nome + " " + data.sobrenome,
+      cpf: data.cpf,
+      data_nascimento: new Date(data.nascimento).toISOString().split("T")[0],
+      genero: data.genero,
+      email: data.email,
+      senha: data.senha,
+      status: "ativo",
+      grupo: "cliente",
+    };
+
+    const response = await fetch(`http://localhost:8080/api/pessoas/${usuario.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify(pessoa)
+    })
+    if(response.ok){
+      alert('Atualizado com sucesso')
+    }
+  };
+  const metodoEnvio = usuario != undefined ? atualizarUsuario : criarUsuario;
+
+  
+
+  useEffect(() => {
+    if (usuario != undefined) {
+      metodos.setValue("nome", usuario.nome.split(" ")[0]);
+      metodos.setValue("sobrenome", usuario.nome.split(" ").slice(1).join(" "));
+      metodos.setValue("cpf", usuario.cpf);
+      metodos.setValue("genero", usuario.genero);
+      metodos.setValue("nascimento", usuario.data_nascimento);
+      metodos.setValue("senha", usuario.senha);
+      metodos.setValue("email", usuario.email);
+    }
+  }, [metodos, usuario]);
 
   return (
     <Modal show={props.show} onHide={props.onHide} centered size="lg">
@@ -131,8 +201,8 @@ function ModalCadastro(props) {
         style={{ backgroundColor: "#EDEFF2" }}
       >
         <FormProvider {...metodos}>
-          <Form onSubmit={metodos.handleSubmit(handleSubmit)}>
-            <CadastroPessoa />
+          <Form onSubmit={metodos.handleSubmit(metodoEnvio)}>
+            <CadastroPessoa onlyRead={propsSomenteLeitura} />
             <CadastroEndereco tipo={"faturamento"} />
             <Row className="mb-3 d-flex justify-content-center">
               <Row

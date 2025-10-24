@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card, Modal } from "react-bootstrap";
 import HeaderDefault from "../components/default/HeaderDefault";
 import { useLocation, useNavigate } from "react-router-dom";
+import ModalCadastro from "../components/home/ModalCadastro";
+
+
 
 function HomePageLogado() {
   const [produtos, setProdutos] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const { grupo, pessoa } = location.state || {};
-
+  const [showModalEdit, setShowModalEdit] = useState();
   // 🚫 Bloqueia acesso direto
   if (!location.state || !location.state.pessoa) {
     return (
@@ -62,7 +65,7 @@ function HomePageLogado() {
   // 🔚 Logout
   function handleLogout() {
     localStorage.clear();
-    navigate("/");
+    navigate("/home");
   }
 
   return (
@@ -70,7 +73,12 @@ function HomePageLogado() {
       style={{ backgroundColor: "#EDEFF2" }}
       className="min-vh-100 d-flex flex-column"
     >
-      <HeaderDefault openModalLogin={null} />
+      {showModalEdit && 
+      <ModalCadastro 
+      show={showModalEdit}
+      onHide={()=>setShowModalEdit(false)}
+      usuario={pessoa}/>}
+      <HeaderDefault openModalLogin={()=>setShowModalEdit(true)} pessoa={pessoa}/>
 
       <div
         className="d-flex justify-content-between align-items-center p-4"

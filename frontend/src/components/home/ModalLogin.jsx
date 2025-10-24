@@ -39,7 +39,6 @@ function ModalLogin(props) {
 
       const grupo = pessoa[0].grupo;
 
-      // ✅ Envia para HomePageLogado
       props.onHide();
       navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoa[0] } });
     } catch (error) {

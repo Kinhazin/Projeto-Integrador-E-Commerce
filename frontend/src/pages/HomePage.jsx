@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Form } from "react-bootstrap"; 
+import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import HeaderDefault from "../components/default/HeaderDefault";
 import { useNavigate } from "react-router-dom";
 import ModalLogin from "../components/home/ModalLogin";
@@ -49,19 +49,20 @@ function HomePage() {
       style={{ backgroundColor: "#EDEFF2" }}
       className="min-vh-100 d-flex flex-column"
     >
-        {showModalLogin && 
+      {showModalLogin && (
         <ModalLogin
-        show={showModalLogin}
-        onHide={()=>setShowModalLogin(false)}
-        abrirCadastro={()=>setShowModalCadastro(true)}
-        />}
-        {showModalCadastro &&
+          show={showModalLogin}
+          onHide={() => setShowModalLogin(false)}
+          abrirCadastro={() => setShowModalCadastro(true)}
+        />
+      )}
+      {showModalCadastro && (
         <ModalCadastro
-        show={showModalCadastro}
-        onHide={()=>setShowModalCadastro(false)}
-        />}
-      <HeaderDefault 
-      openModalLogin={()=>setShowModalLogin(true)}/>
+          show={showModalCadastro}
+          onHide={() => setShowModalCadastro(false)}
+        />
+      )}
+      <HeaderDefault openModalLogin={() => setShowModalLogin(true)} />
       <main className="flex-grow-1 p-4">
         <Container fluid>
           <Row className="g-4">
@@ -74,7 +75,7 @@ function HomePage() {
                 <Col
                   key={produto.id}
                   lg={3}
-                  md={4}
+                  md={3}
                   sm={6}
                   xs={12}
                   className="suave-transition"
@@ -113,8 +114,10 @@ function HomePage() {
                         >
                           Comprar
                         </button>
-                        <p className="fs-4">Quantidade: {produto.quantidadeEstoque}</p>
                       </div>
+                      <p className="fs-5">
+                        Quantidade: {produto.quantidadeEstoque}
+                      </p>
                     </Card.Body>
                   </Card>
                 </Col>

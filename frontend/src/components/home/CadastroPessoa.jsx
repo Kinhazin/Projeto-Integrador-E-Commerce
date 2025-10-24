@@ -1,7 +1,7 @@
 import { Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { useFormContext } from "react-hook-form";
-function CadastroPessoa() {
+function CadastroPessoa({onlyRead}) {
   const metodos = useFormContext();
   return (
     <>
@@ -11,6 +11,7 @@ function CadastroPessoa() {
           <Form.Control
             type="text"
             required
+            
             minLength={3}
             {...metodos.register("nome")}
           />
@@ -33,6 +34,7 @@ function CadastroPessoa() {
             inputMode="numeric"
             maxLength={11}
             minLength={11}
+            {...onlyRead}
             required
             {...metodos.register("cpf", {
               required: "Campo obrigatório",
@@ -75,7 +77,7 @@ function CadastroPessoa() {
       <Row className="mb-5 d-flex justify-content-center">
         <Form.Group md="4" className="col-10">
           <Form.Label style={{ color: "#34495E" }}>E-mail</Form.Label>
-          <Form.Control {...metodos.register("email")} required></Form.Control>
+          <Form.Control {...metodos.register("email")} {...onlyRead}required></Form.Control>
         </Form.Group>
         <Form.Group md="4" className="col-5"></Form.Group>
       </Row>
