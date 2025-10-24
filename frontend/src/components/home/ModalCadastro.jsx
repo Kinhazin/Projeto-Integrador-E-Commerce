@@ -23,6 +23,19 @@ function ModalCadastro(props) {
   const [endereceos, setEnderecos] = useState([]);
   const [showModalAddMaisEndereco, setShowModalAddMaisEndereco] = useState(false)
 
+  const getEnderecos = async (pessoaId) => {
+    const response = await fetch(
+      `http://localhost:8080/api/enderecos/por-pessoa/${pessoaId}`
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      await setEnderecos(data);
+      return data;
+    }
+  };
+
   const criarUsuario = async (data) => {
     function validarCPF(cpf) {
       cpf = cpf.replace(/[^\d]+/g, "");
@@ -213,6 +226,7 @@ function ModalCadastro(props) {
           alert("Erro");
           throw new Error("erro");
         }
+        getEnderecos();
       }
 
        const url = `http://localhost:8080/api/pessoas/buscar?email=${encodeURIComponent(
@@ -251,18 +265,6 @@ function ModalCadastro(props) {
 
   const metodoEnvio = usuario != undefined ? atualizarUsuario : criarUsuario;
 
-  const getEnderecos = async (pessoaId) => {
-    const response = await fetch(
-      `http://localhost:8080/api/enderecos/por-pessoa/${pessoaId}`
-    );
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      setEnderecos(data);
-      return data;
-    }
-  };
 
   useEffect(() => {
     if (usuario != undefined) {
@@ -295,7 +297,7 @@ function ModalCadastro(props) {
         metodos.setValue(`estado${tipo}${index}`, endereco.estado);
       });
     }
-  }, [endereceos]);
+  }, [endereceos, props.show, metodos]);
 
   return (
     <Modal show={props.show} onHide={props.onHide} centered size="lg">
