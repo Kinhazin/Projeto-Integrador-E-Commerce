@@ -44,7 +44,7 @@ function CadastroEndereco({tipo}){
           <Form.Group md="4" className="col-7">
             <Form.Label style={{ color: "#34495E" }}>Lougradouro</Form.Label>
             <Form.Control
-              {...metodos.register(`Lougradouro${tipo}`)}
+              {...metodos.register(`logradouro${tipo}`)}
               type="text"
               required
               minLength={3}

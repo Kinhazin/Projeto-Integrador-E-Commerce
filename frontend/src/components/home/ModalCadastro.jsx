@@ -48,7 +48,39 @@ function ModalCadastro(props) {
           },
         });
         const dado = await resposta.json();
-        console.log(dado);
+
+        const id_pessoas = dado[0].id;
+
+        console.log(data);
+        console.log(id_pessoas);
+
+        const faturamento = {
+          cep: data.cepfaturamento,
+          bairro: data.bairrofaturamento,
+          logradouro: data.logradourofaturamento,
+          numero: data.numerofaturamento,
+          complemento: data.complementofaturamento,
+          cidade: data.cidadefaturamento,
+          estado: data.estadofaturamento,
+          tipo: "faturamento",
+          pessoa: {
+            id: id_pessoas,
+          },
+        };
+        const resps = await fetch("http://localhost:8080/api/enderecos", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(faturamento),
+        });
+
+        if (!resps.ok) {
+          const errorMessage = await resps.text();
+          throw new Error(errorMessage);
+        }
+
+        alert("Adicionado com sucesso");
       }
     } catch (erro) {
       console.log(erro.message);

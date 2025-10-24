@@ -22,7 +22,7 @@ public class Endereco {
     private String bairro;
 
     @Column(nullable = false)
-    private String lougradouro;
+    private String logradouro;
 
     @Column(nullable = false)
     private String numero;
@@ -31,10 +31,14 @@ public class Endereco {
     private String complemento;
 
     @Column(nullable = false)
+    private String tipo;
+
+    @Column(nullable = false)
     private String cidade;
 
     @Column(nullable = false)
     private String estado;
+    
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoa_id", nullable = false)
