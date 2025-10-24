@@ -7,6 +7,7 @@ import { FormProvider } from "react-hook-form";
 import CadastroEndereco from "./CadastroEndereco";
 import CadastroPessoa from "./CadastroPessoa";
 import { useEffect, useState } from "react";
+import ModalAdicionarEndereco from "./ModalAdicionarEndereco";
 
 function ModalCadastro(props) {
   const metodos = useForm();
@@ -19,6 +20,7 @@ function ModalCadastro(props) {
   const { usuario } = props;
   const propsSomenteLeitura = usuario !== undefined ? { readOnly: true } : {};
   const [endereceos, setEnderecos] = useState([]);
+  const [showModalAddMaisEndereco, setShowModalAddMaisEndereco] = useState(false)
 
   const criarUsuario = async (data) => {
     function validarCPF(cpf) {
@@ -211,6 +213,7 @@ function ModalCadastro(props) {
           throw new Error("erro");
         }
       }
+      alert('Atualizado com sucesso')
     } catch (erro) {
       alert(erro);
     }
@@ -269,6 +272,13 @@ function ModalCadastro(props) {
         style={{ backgroundColor: "#34495E" }}
         closeButton
       >
+        {showModalAddMaisEndereco && 
+        <ModalAdicionarEndereco
+        getEndereco={getEnderecos}
+        id={usuario?.id}
+        show={showModalAddMaisEndereco}
+        onHide={()=>setShowModalAddMaisEndereco(false)}
+        />}
         <Modal.Title>
           {usuario == undefined ? "Cadastra-se" : "Seu perfil"}
         </Modal.Title>
@@ -322,6 +332,7 @@ function ModalCadastro(props) {
                   type="button"
                   style={{ height: "40px" }}
                   className="bnt col-3"
+                  onClick={()=> setShowModalAddMaisEndereco(true)}
                 >
                   adicionar endereço
                 </Button>
