@@ -6,7 +6,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { FormProvider } from "react-hook-form";
 import CadastroEndereco from "./CadastroEndereco";
 import CadastroPessoa from "./CadastroPessoa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function ModalCadastro(props) {
   const metodos = useForm();
@@ -18,6 +18,7 @@ function ModalCadastro(props) {
 
   const { usuario } = props;
   const propsSomenteLeitura = usuario !== undefined ? { readOnly: true } : {};
+  const [endereceos, setEnderecos] = useState([]);
 
   const criarUsuario = async (data) => {
     function validarCPF(cpf) {
@@ -85,13 +86,13 @@ function ModalCadastro(props) {
         console.log(id_pessoas);
 
         const faturamento = {
-          cep: data.cepfaturamento,
-          bairro: data.bairrofaturamento,
-          logradouro: data.logradourofaturamento,
-          numero: data.numerofaturamento,
-          complemento: data.complementofaturamento,
-          cidade: data.cidadefaturamento,
-          estado: data.estadofaturamento,
+          cep: data.cepfaturamento1,
+          bairro: data.bairrofaturamento1,
+          logradouro: data.logradourofaturamento1,
+          numero: data.numerofaturamento1,
+          complemento: data.complementofaturamento1,
+          cidade: data.cidadefaturamento1,
+          estado: data.estadofaturamento1,
           tipo: texto,
           pessoa: {
             id: id_pessoas,
@@ -113,13 +114,13 @@ function ModalCadastro(props) {
 
         if (utilizar == false) {
           const entrega = {
-            cep: data.cepentrega,
-            bairro: data.bairroentrega,
-            logradouro: data.logradouroentrega,
-            numero: data.numeroentrega,
-            complemento: data.complementoentrega,
-            cidade: data.cidadeentrega,
-            estado: data.estadoentrega,
+            cep: data.cepentrega1,
+            bairro: data.bairroentrega1,
+            logradouro: data.logradouroentrega1,
+            numero: data.numeroentrega1,
+            complemento: data.complementoentrega1,
+            cidade: data.cidadeentrega1,
+            estado: data.estadoentrega1,
             tipo: "entrega",
             pessoa: {
               id: id_pessoas,
@@ -160,20 +161,34 @@ function ModalCadastro(props) {
       grupo: "cliente",
     };
 
-    const response = await fetch(`http://localhost:8080/api/pessoas/${usuario.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type' : 'application/json'
-      },
-      body: JSON.stringify(pessoa)
-    })
-    if(response.ok){
-      alert('Atualizado com sucesso')
+    const response = await fetch(
+      `http://localhost:8080/api/pessoas/${usuario.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pessoa),
+      }
+    );
+    if (response.ok) {
+      alert("Atualizado com sucesso");
     }
   };
   const metodoEnvio = usuario != undefined ? atualizarUsuario : criarUsuario;
 
-  
+  const getEnderecos = async (pessoaId) => {
+    const response = await fetch(
+      `http://localhost:8080/api/enderecos/por-pessoa/${pessoaId}`
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      setEnderecos(data);
+      return data;
+    }
+  };
 
   useEffect(() => {
     if (usuario != undefined) {
@@ -184,8 +199,30 @@ function ModalCadastro(props) {
       metodos.setValue("nascimento", usuario.data_nascimento);
       metodos.setValue("senha", usuario.senha);
       metodos.setValue("email", usuario.email);
+
+      getEnderecos(usuario.id);
     }
   }, [metodos, usuario]);
+
+  useEffect(() => {
+
+    if (endereceos.length > 0) {
+          
+      endereceos.forEach((endereco, index) => {
+        const tipo = endereco.tipo;
+        console.log(endereco.tipo + index);
+
+
+        metodos.setValue(`cep${tipo}${index}`, endereco.cep);
+        metodos.setValue(`bairro${tipo}${index}`, endereco.bairro);
+        metodos.setValue(`logradouro${tipo}${index}`, endereco.logradouro);
+        metodos.setValue(`numero${tipo}${index}`, endereco.numero);
+        metodos.setValue(`complemento${tipo}${index}`, endereco.complemento);
+        metodos.setValue(`cidade${tipo}${index}`, endereco.cidade);
+        metodos.setValue(`estado${tipo}${index}`, endereco.estado);
+      });
+    }
+  }, [endereceos]);
 
   return (
     <Modal show={props.show} onHide={props.onHide} centered size="lg">
@@ -194,7 +231,9 @@ function ModalCadastro(props) {
         style={{ backgroundColor: "#34495E" }}
         closeButton
       >
-        <Modal.Title>Cadastra-se</Modal.Title>
+        <Modal.Title>
+          {usuario == undefined ? "Cadastra-se" : "Seu perfil"}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body
         className="w-100 text-white d-flex flex-column align-content-center justify-content-center"
@@ -203,22 +242,35 @@ function ModalCadastro(props) {
         <FormProvider {...metodos}>
           <Form onSubmit={metodos.handleSubmit(metodoEnvio)}>
             <CadastroPessoa onlyRead={propsSomenteLeitura} />
-            <CadastroEndereco tipo={"faturamento"} />
-            <Row className="mb-3 d-flex justify-content-center">
-              <Row
-                className="fw-bolder mb-3"
-                style={{ width: "86%", color: "#34495E" }}
-              >
-                <Form.Check
-                  defaultChecked
-                  type="switch"
-                  id="custom-switch"
-                  label="Utilizar o mesmo endereço de faturamento para a entrega"
-                  {...metodos.register("utilizarIgual")}
-                />
-              </Row>
-              {utilizar == false && <CadastroEndereco tipo={"entrega"} />}
-            </Row>
+            {usuario == undefined ? (
+              <>
+                <CadastroEndereco index={1} tipo={"faturamento"} />
+                <Row className="mb-3 d-flex justify-content-center">
+                  <Row
+                    className="fw-bolder mb-3"
+                    style={{ width: "86%", color: "#34495E" }}
+                  >
+                    <Form.Check
+                      defaultChecked
+                      type="switch"
+                      id="custom-switch"
+                      label="Utilizar o mesmo endereço de faturamento para a entrega"
+                      {...metodos.register("utilizarIgual")}
+                    />
+                  </Row>
+                  {utilizar == false && (
+                    <CadastroEndereco index={1} tipo={"entrega"} />
+                  )}
+                </Row>
+              </>
+            ) : (
+              <>
+                {endereceos.map((endereco, index) => (
+                  <CadastroEndereco tipo={endereco.tipo} index={index} />
+                ))}
+              </>
+            )}
+
             <Row className="col-11">
               <Button type="submit" className="bnt col-3 ms-auto">
                 Cadastrar

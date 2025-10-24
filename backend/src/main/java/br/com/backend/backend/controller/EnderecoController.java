@@ -18,19 +18,30 @@ public class EnderecoController {
     @Autowired
     private EnderecoService enderecoService;
 
-
     @Autowired
     private PessoaRepository pessoaRepository;
 
     @GetMapping
-        public List<Endereco> listarTodos() {
+    public List<Endereco> listarTodos() {
         return enderecoService.listarTodos();
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Endereco> buscarPorId(@PathVariable Long id) {
         return enderecoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/por-pessoa/{pessoaId}")
+    public ResponseEntity<List<Endereco>> listarPorPessoaId(@PathVariable Long pessoaId) {
+        Optional<Pessoa> pessoaOpt = pessoaRepository.findById(pessoaId);
+        if (pessoaOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        List<Endereco> enderecos = enderecoService.buscarPorPessoaId(pessoaId);
+        return ResponseEntity.ok(enderecos);
     }
 
     @PostMapping

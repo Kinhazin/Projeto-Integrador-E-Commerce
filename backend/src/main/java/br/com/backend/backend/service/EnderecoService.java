@@ -22,6 +22,10 @@ public class EnderecoService {
         return enderecoRepository.findById(id);
     }
 
+    public List<Endereco> buscarPorPessoaId(Long pessoaId) {
+        return enderecoRepository.findByPessoaId(pessoaId);
+    }
+
     public Endereco salvar(Endereco endereco) {
         return enderecoRepository.save(endereco);
     }

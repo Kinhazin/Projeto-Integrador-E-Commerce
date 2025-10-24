@@ -3,9 +3,9 @@ import { Row } from "react-bootstrap";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 
-function CadastroEndereco({ tipo }) {
+function CadastroEndereco({ tipo, index }) {
   const metodos = useFormContext();
-  const cep = metodos.watch(`cep${tipo}`);
+  const cep = metodos.watch(`cep${tipo}${index}`);
 
   useEffect(() => {
     async function fetchAddress() {
@@ -20,10 +20,10 @@ function CadastroEndereco({ tipo }) {
             alert("CEP não encontrado");
             return;
           }
-          metodos.setValue(`bairro${tipo}`, data.bairro);
-          metodos.setValue(`logradouro${tipo}`, data.logradouro);
-          metodos.setValue(`cidade${tipo}`, data.localidade);
-          metodos.setValue(`estado${tipo}`, data.uf);
+          metodos.setValue(`bairro${tipo}${index}`, data.bairro);
+          metodos.setValue(`logradouro${tipo}${index}`, data.logradouro);
+          metodos.setValue(`cidade${tipo}${index}`, data.localidade);
+          metodos.setValue(`estado${tipo}${index}`, data.uf);
         } catch (err) {
           console.error("Erro ao buscar o endereço:", err);
         }
@@ -48,7 +48,7 @@ function CadastroEndereco({ tipo }) {
             inputMode="numeric"
             maxLength={8}
             minLength={8}
-            {...metodos.register(`cep${tipo}`, {
+            {...metodos.register(`cep${tipo}${index}`, {
               required: "Campo obrigatório",
               pattern: {
                 value: /^\d+$/,
@@ -57,14 +57,14 @@ function CadastroEndereco({ tipo }) {
             })}
             onChange={(e) => {
               const onlyNums = e.target.value.replace(/\D/g, "");
-              metodos.setValue(`cep${tipo}`, onlyNums);
+              metodos.setValue(`cep${tipo}${index}`, onlyNums);
             }}
           />
         </Form.Group>
         <Form.Group md="4" className="col-5">
           <Form.Label style={{ color: "#34495E" }}>Bairro</Form.Label>
           <Form.Control
-            {...metodos.register(`bairro${tipo}`)}
+            {...metodos.register(`bairro${tipo}${index}`)}
             required
           ></Form.Control>
         </Form.Group>
@@ -73,7 +73,7 @@ function CadastroEndereco({ tipo }) {
         <Form.Group md="4" className="col-7">
           <Form.Label style={{ color: "#34495E" }}>Logradouro</Form.Label>
           <Form.Control
-            {...metodos.register(`logradouro${tipo}`)}
+            {...metodos.register(`logradouro${tipo}${index}`)}
             type="text"
             required
             minLength={3}
@@ -86,7 +86,7 @@ function CadastroEndereco({ tipo }) {
             Número
           </Form.Label>
           <Form.Control required type="number"
-            {...metodos.register(`numero${tipo}`)}
+            {...metodos.register(`numero${tipo}${index}`)}
           />
         </Form.Group>
       </Row>
@@ -96,20 +96,20 @@ function CadastroEndereco({ tipo }) {
           <Form.Control
             type="text"
             required
-            {...metodos.register(`complemento${tipo}`)}
+            {...metodos.register(`complemento${tipo}${index}`)}
           />
         </Form.Group>
         <Form.Group md="4" className="col-3">
           <Form.Label style={{ color: "#34495E" }}>Cidade</Form.Label>
           <Form.Control
             type="text"
-            {...metodos.register(`cidade${tipo}`)}
+            {...metodos.register(`cidade${tipo}${index}`)}
             required
           ></Form.Control>
         </Form.Group>
         <Form.Group md="4" className="col-2">
           <Form.Label style={{ color: "#34495E" }}>UF</Form.Label>
-          <Form.Select {...metodos.register(`estado${tipo}`)} required>
+          <Form.Select {...metodos.register(`estado${tipo}${index}`)} required>
             <option value="">Selecione</option>
             <option value="AC">AC</option>
             <option value="AL">AL</option>
