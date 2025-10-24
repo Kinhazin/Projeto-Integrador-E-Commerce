@@ -33,8 +33,8 @@ function ModalAdicionarEndereco(props) {
       throw new Error(errorMessage);
     }
     props.getEndereco();
-    props.onHide();
     alert("Adicionado com sucesso");
+    props.fecharPai()
   };
 
   return (

@@ -308,6 +308,7 @@ function ModalCadastro(props) {
       >
         {showModalAddMaisEndereco && 
         <ModalAdicionarEndereco
+        fecharPai={props.onHide}
         getEndereco={getEnderecos}
         id={usuario?.id}
         show={showModalAddMaisEndereco}
@@ -326,7 +327,7 @@ function ModalCadastro(props) {
             <CadastroPessoa onlyRead={propsSomenteLeitura} />
             {usuario == undefined ? (
               <>
-                <CadastroEndereco index={1} tipo={"faturamento"} />
+                <CadastroEndereco  index={1} tipo={"faturamento"} />
                 <Row className="mb-3 d-flex justify-content-center">
                   <Row
                     className="fw-bolder mb-3"
