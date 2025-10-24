@@ -214,6 +214,7 @@ function ModalCadastro(props) {
           throw new Error("erro");
         }
       }
+
        const url = `http://localhost:8080/api/pessoas/buscar?email=${encodeURIComponent(
         data.email
       )}&senha=${encodeURIComponent(data.senha)}`;
@@ -238,11 +239,9 @@ function ModalCadastro(props) {
       }
 
       const grupo = pessoar[0].grupo;
-
+      getEnderecos(usuario.id)
       props.onHide();
       navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoar[0] } });
-
-      
       
       alert('Atualizado com sucesso')
     } catch (erro) {
@@ -278,6 +277,8 @@ function ModalCadastro(props) {
       getEnderecos(usuario.id);
     }
   }, [metodos, usuario]);
+
+  
 
   useEffect(() => {
     if (endereceos.length > 0) {
