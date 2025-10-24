@@ -150,31 +150,72 @@ function ModalCadastro(props) {
   };
 
   const atualizarUsuario = async (data) => {
-    const pessoa = {
-      nome: data.nome + " " + data.sobrenome,
-      cpf: data.cpf,
-      data_nascimento: new Date(data.nascimento).toISOString().split("T")[0],
-      genero: data.genero,
-      email: data.email,
-      senha: data.senha,
-      status: "ativo",
-      grupo: "cliente",
-    };
+    try {
+      const pessoa = {
+        nome: data.nome + " " + data.sobrenome,
+        cpf: data.cpf,
+        data_nascimento: new Date(data.nascimento).toISOString().split("T")[0],
+        genero: data.genero,
+        email: data.email,
+        senha: data.senha,
+        status: "ativo",
+        grupo: "cliente",
+      };
 
-    const response = await fetch(
-      `http://localhost:8080/api/pessoas/${usuario.id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(pessoa),
+      const response = await fetch(
+        `http://localhost:8080/api/pessoas/${usuario.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(pessoa),
+        }
+      );
+      if (!response.ok) {
+        alert("Erro");
+        throw new Error("Erro");
       }
-    );
-    if (response.ok) {
-      alert("Atualizado com sucesso");
+
+      for (const [index, endereco] of endereceos.entries()) {
+        console.log(endereco);
+
+        const entrega = {
+          id: endereco.id,
+          cep: data[`cep${endereco.tipo}${index}`],
+          bairro: data[`bairro${endereco.tipo}${index}`],
+          logradouro: data[`logradouro${endereco.tipo}${index}`],
+          numero: data[`numero${endereco.tipo}${index}`],
+          complemento: data[`complemento${endereco.tipo}${index}`],
+          cidade: data[`cidade${endereco.tipo}${index}`],
+          estado: data[`estado${endereco.tipo}${index}`],
+          tipo: endereco.tipo,
+          pessoa: {
+              id: usuario.id,
+            }, 
+        };
+
+        const resposta = await fetch(
+          `http://localhost:8080/api/enderecos/${endereco.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(entrega),
+          }
+        );
+
+        if (!resposta.ok) {
+          alert("Erro");
+          throw new Error("erro");
+        }
+      }
+    } catch (erro) {
+      alert(erro);
     }
   };
+
   const metodoEnvio = usuario != undefined ? atualizarUsuario : criarUsuario;
 
   const getEnderecos = async (pessoaId) => {
@@ -205,13 +246,10 @@ function ModalCadastro(props) {
   }, [metodos, usuario]);
 
   useEffect(() => {
-
     if (endereceos.length > 0) {
-          
       endereceos.forEach((endereco, index) => {
         const tipo = endereco.tipo;
         console.log(endereco.tipo + index);
-
 
         metodos.setValue(`cep${tipo}${index}`, endereco.cep);
         metodos.setValue(`bairro${tipo}${index}`, endereco.bairro);
@@ -272,9 +310,22 @@ function ModalCadastro(props) {
             )}
 
             <Row className="col-11">
-              <Button type="submit" className="bnt col-3 ms-auto">
-                Cadastrar
+              <Button
+                type="submit"
+                style={{ height: "40px" }}
+                className="bnt col-3 ms-auto me-2"
+              >
+                {usuario != undefined ? "Atualizar" : "Cadastrar"}
               </Button>
+              {usuario != undefined && (
+                <Button
+                  type="button"
+                  style={{ height: "40px" }}
+                  className="bnt col-3"
+                >
+                  adicionar endereço
+                </Button>
+              )}
             </Row>
           </Form>
         </FormProvider>
