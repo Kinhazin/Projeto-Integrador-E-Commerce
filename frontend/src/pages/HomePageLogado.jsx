@@ -1,17 +1,33 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Form } from "react-bootstrap"; 
+import { Container, Row, Col, Card } from "react-bootstrap";
 import HeaderDefault from "../components/default/HeaderDefault";
-import { useNavigate } from "react-router-dom";
-import ModalLogin from "../components/home/ModalLogin";
-import ModalCadastro from "../components/home/ModalCadastro";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function HomePage() {
+function HomePageLogado() {
   const [produtos, setProdutos] = useState([]);
   const navigate = useNavigate();
-  const [showModalLogin, setShowModalLogin] = useState(false);
-  const [showModalCadastro, setShowModalCadastro] = useState(false);
+  const location = useLocation();
+  const { grupo, pessoa } = location.state || {};
 
-  // Sua função para buscar dados está ótima, não precisa mudar!
+  // 🚫 Bloqueia acesso direto
+  if (!location.state || !location.state.pessoa) {
+    return (
+      <div
+        style={{
+          backgroundColor: "#EDEFF2",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#34495E",
+        }}
+      >
+        <h3>Você precisa estar logado para acessar esta página.</h3>
+      </div>
+    );
+  }
+
+  // 🔄 Buscar produtos
   async function getProdutos() {
     try {
       const response = await fetch("http://localhost:8080/api/produtos");
@@ -30,6 +46,7 @@ function HomePage() {
     getProdutos();
   }, []);
 
+  // 🛒 Adicionar ao carrinho
   function adicionarCarrinho(produto) {
     produto.quantidadeCarrinho = produto.quantidadeCarrinho ?? 1;
     const produtoExiste = localStorage.getItem(produto.id);
@@ -39,9 +56,13 @@ function HomePage() {
     } else {
       alert(`${produto.nome} adicionado ao carrinho`);
     }
-    const produtoString = JSON.stringify(produto);
-    localStorage.setItem(produto.id, produtoString);
-    console.log(localStorage.getItem(produto.id));
+    localStorage.setItem(produto.id, JSON.stringify(produto));
+  }
+
+  // 🔚 Logout
+  function handleLogout() {
+    localStorage.clear();
+    navigate("/");
   }
 
   return (
@@ -49,25 +70,28 @@ function HomePage() {
       style={{ backgroundColor: "#EDEFF2" }}
       className="min-vh-100 d-flex flex-column"
     >
-        {showModalLogin && 
-        <ModalLogin
-        show={showModalLogin}
-        onHide={()=>setShowModalLogin(false)}
-        abrirCadastro={()=>setShowModalCadastro(true)}
-        />}
-        {showModalCadastro &&
-        <ModalCadastro
-        show={showModalCadastro}
-        onHide={()=>setShowModalCadastro(false)}
-        />}
-      <HeaderDefault 
-      openModalLogin={()=>setShowModalLogin(true)}/>
+      <HeaderDefault openModalLogin={null} />
+
+      <div
+        className="d-flex justify-content-between align-items-center p-4"
+        style={{ color: "#34495E" }}
+      >
+        <h4>Bem-vindo, {pessoa?.nome || "Usuário"}!</h4>
+        <button
+          className="btn text-white"
+          style={{ backgroundColor: "#34495E" }}
+          onClick={handleLogout}
+        >
+          Sair
+        </button>
+      </div>
+
       <main className="flex-grow-1 p-4">
         <Container fluid>
           <Row className="g-4">
             {produtos.map((produto) => {
               const imagemPrincipal =
-                produto.imagens.find((img) => img.principal == true) ||
+                produto.imagens.find((img) => img.principal === true) ||
                 "https://via.placeholder.com/150";
 
               return (
@@ -88,14 +112,10 @@ function HomePage() {
                       }
                     />
                     <Card.Body>
-                      <Card.Title>
-                        {produto.nome || "Nome do Produto"}
-                      </Card.Title>
-                      <Card.Text>
-                        {produto.descricao || "Descrição do produto aqui."}
-                      </Card.Text>
-                      <h4>R$ {produto.preco || "0,00"}</h4>
-                      <div className="d-flex gap-2 ">
+                      <Card.Title>{produto.nome}</Card.Title>
+                      <Card.Text>{produto.descricao}</Card.Text>
+                      <h4>R$ {produto.preco}</h4>
+                      <div className="d-flex gap-2">
                         <button
                           className="btn text-white suave-transition"
                           style={{ background: "#34495E" }}
@@ -126,4 +146,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default HomePageLogado;
