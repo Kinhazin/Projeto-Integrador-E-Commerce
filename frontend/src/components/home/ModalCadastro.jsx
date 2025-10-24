@@ -8,10 +8,11 @@ import CadastroEndereco from "./CadastroEndereco";
 import CadastroPessoa from "./CadastroPessoa";
 import { useEffect, useState } from "react";
 import ModalAdicionarEndereco from "./ModalAdicionarEndereco";
+import {useNavigate} from "react-router-dom"
 
 function ModalCadastro(props) {
   const metodos = useForm();
-
+  const navigate = useNavigate();
   const utilizar = useWatch({
     control: metodos.control,
     name: "utilizarIgual",
@@ -213,6 +214,36 @@ function ModalCadastro(props) {
           throw new Error("erro");
         }
       }
+       const url = `http://localhost:8080/api/pessoas/buscar?email=${encodeURIComponent(
+        data.email
+      )}&senha=${encodeURIComponent(data.senha)}`;
+
+      const responset = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!responset.ok) {
+        throw new Error("Erro no servidor. Tente novamente.");
+      }
+
+      const pessoar = await responset.json();
+
+      if (!pessoa || pessoar.length === 0) {
+        throw new Error("E-mail ou senha incorretos.");
+      }
+
+      if (pessoar[0].status !== "ativo") {
+        throw new Error("Usuário inativo. Entre em contato com o administrador.");
+      }
+
+      const grupo = pessoar[0].grupo;
+
+      props.onHide();
+      navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoar[0] } });
+
+      
+      
       alert('Atualizado com sucesso')
     } catch (erro) {
       alert(erro);
