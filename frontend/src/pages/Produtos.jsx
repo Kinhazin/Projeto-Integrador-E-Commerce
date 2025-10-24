@@ -203,7 +203,7 @@ function Produtos() {
                         {produto.status === "ativo" ? "Inativar" : "Ativar"}
                       </button>
                     )}
-
+                 {grupo == "administrativo" && (
                     <button
                       className="btn btn-secondary ms-2"
                       onClick={() => {
@@ -213,6 +213,7 @@ function Produtos() {
                     >
                       visualizar
                     </button>
+                 )}
                   </td>
                 </tr>
               ))

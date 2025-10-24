@@ -113,6 +113,7 @@ function HomePage() {
                         >
                           Comprar
                         </button>
+                        <p className="fs-4">Quantidade: {produto.quantidadeEstoque}</p>
                       </div>
                     </Card.Body>
                   </Card>
