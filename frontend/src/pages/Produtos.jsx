@@ -20,8 +20,7 @@ function Produtos() {
   const itensPorPagina = 10;
 
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const grupo = queryParams.get("grupo");
+  const {grupo} = location.state;
 
   const itensFiltrados = useWatch({
     control: metodo.control,
@@ -195,7 +194,7 @@ function Produtos() {
                     >
                       Editar
                     </button>
-                    {grupo == "adm" && (
+                    {grupo == "administrativo" && (
                       <button
                         type="button"
                         onClick={() => alterarStatus(produto.id)}

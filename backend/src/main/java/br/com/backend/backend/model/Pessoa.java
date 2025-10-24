@@ -1,5 +1,7 @@
 package br.com.backend.backend.model;
 
+import java.sql.Date;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +20,12 @@ public class Pessoa {
 
     @Column(nullable = false, length = 14, unique = true)
     private String cpf;
+
+    @Column(nullable = true)
+    private Date data_nascimento;
+
+    @Column(nullable = true)
+    private String genero;
 
     @Column(nullable = false, length = 100, unique = true)
     private String email;
@@ -58,6 +66,22 @@ public class Pessoa {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Date getData_nascimento() {
+        return data_nascimento;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setData_nascimento(Date data_nascimento) {
+        this.data_nascimento = data_nascimento;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
     public String getEmail() {
