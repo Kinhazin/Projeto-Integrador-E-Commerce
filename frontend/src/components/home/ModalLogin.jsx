@@ -29,7 +29,7 @@ function ModalLogin(props) {
 
       const pessoa = await response.json();
 
-      if (pessoa.length === 0) {
+      if (!pessoa || pessoa.length === 0) {
         throw new Error("E-mail ou senha incorretos.");
       }
 
@@ -38,8 +38,10 @@ function ModalLogin(props) {
       }
 
       const grupo = pessoa[0].grupo;
-      props.onHide(); // fecha o modal
-      navigate("backbone", { state: { grupo: grupo } });
+
+      // ✅ Envia para HomePageLogado
+      props.onHide();
+      navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoa[0] } });
     } catch (error) {
       setErro(error.message);
     } finally {

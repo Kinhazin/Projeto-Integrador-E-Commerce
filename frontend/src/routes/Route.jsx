@@ -6,6 +6,7 @@ import Produtos from '../pages/Produtos';
 import HomePage from '../pages/HomePage';
 import Carrinho from '../pages/Carrinho';
 import DetalhesDoProduto from '../pages/DetalhesDoProduto';
+import HomePageLogado from '../pages/HomePageLogado'; // ✅ adicionado
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                 <Route path="/pessoas" element={<Pessoas />} />
                 <Route path="/produtos" element={<Produtos />}/>
                 <Route path="/home" element={<HomePage />}/>
+                <Route path="/homepagelogado" element={<HomePageLogado />}/> {/* ✅ nova rota */}
                 <Route path="/detalhes" element={<DetalhesDoProduto />}/>
                 <Route path="/carrinho" element={<Carrinho />}/>
             </Routes>
