@@ -10,9 +10,8 @@ function HomePageLogado() {
   const [produtos, setProdutos] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const { grupo, pessoa } = location.state || {};
+  const { pessoa } = location.state || {};
   const [showModalEdit, setShowModalEdit] = useState();
-  // 🚫 Bloqueia acesso direto
   if (!location.state || !location.state.pessoa) {
     return (
       <div

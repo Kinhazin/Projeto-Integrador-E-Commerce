@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react"; // Importar useState e useEffect
 import HeaderDefault from "../components/default/HeaderDefault";
+import ModalLogin from "../components/home/ModalLogin";
+import ModalCadastro from "../components/home/ModalCadastro";
 import { Row, Col, Container, Image } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useWatch } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Carrinho() {
   const [itensDoCarrinho, setItensDoCarrinho] = useState([]);
+  const [showModalLogin, setShowModalLogin] = useState(false);
+  const [showModalCadastro, setShowModalCadastro] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const navigate = useNavigate();
   const metodos = useForm();
   const location = useLocation();
   const { pessoa } = location.state || {};
@@ -17,6 +23,15 @@ function Carrinho() {
     name: "frete",
     defaultValue: 0.15,
   });
+
+  function verificarCliente(){
+    if(pessoa == undefined || pessoa == null){
+      alert('Cadastre-se ou entre na sua conta para finalizar o pedido')
+      setShowModalLogin(true)
+      throw new Error("Cliente não logado");
+    }
+    navigate("/checkout", { state: { pessoa: pessoa, carrinho : itensDoCarrinho, taxa : taxa } });
+  }
 
   useEffect(() => {
     const todasAsChaves = Object.keys(localStorage);
@@ -105,7 +120,12 @@ function Carrinho() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#EDEFF2" }}>
-      <HeaderDefault pessoa={pessoa} />
+      {showModalEdit && 
+      <ModalCadastro 
+      show={showModalEdit}
+      onHide={()=>setShowModalEdit(false)}
+      usuario={pessoa}/>}
+      <HeaderDefault openModalLogin={()=>setShowModalEdit(true)} pessoa={pessoa}/>
       <Container className="py-5">
         <h1>Meu Carrinho</h1>
         <Row>
@@ -210,9 +230,23 @@ function Carrinho() {
                 </div>
               </div>
             </div>
+            <button onClick={()=> verificarCliente()} style={{backgroundColor: 'rgb(52, 73, 94)'}} className="bnt w-100 rounded mt-3 p-1 fs-6 fw-bold text-light"> Finalizar pedido</button>
           </Col>
         </Row>
       </Container>
+            {showModalLogin && (
+        <ModalLogin
+          show={showModalLogin}
+          onHide={() => setShowModalLogin(false)}
+          abrirCadastro={() => setShowModalCadastro(true)}
+        />
+      )}
+       {showModalCadastro && (
+        <ModalCadastro
+          show={showModalCadastro}
+          onHide={() => setShowModalCadastro(false)}
+        />
+      )}
     </div>
   );
 }

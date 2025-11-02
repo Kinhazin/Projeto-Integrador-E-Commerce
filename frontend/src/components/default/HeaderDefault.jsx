@@ -43,7 +43,6 @@ function HeaderDefault({ openModalLogin, pessoa }) {
           className="d-flex flex-row justify-content-center align-items-center ms-2 gap-1"
           style={{ color: "white" }}
         >
-          {console.log(pessoa)}
           {pessoa == undefined && (
             <p className="text-center h-100 m-0">
               <b>Faça login</b> <br />

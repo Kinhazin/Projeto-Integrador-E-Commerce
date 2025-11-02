@@ -44,7 +44,7 @@ function ModalAdicionarEndereco(props) {
         className="text-white border-none"
         closeButton
       >
-        <Modal.Title>Entre na sua conta</Modal.Title>
+        <Modal.Title>Adicionar endereço</Modal.Title>
       </Modal.Header>
 
       <Modal.Body
