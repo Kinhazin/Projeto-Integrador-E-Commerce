@@ -100,10 +100,10 @@ public class ProdutoController {
         return produtoRepository.findById(id)
                 .map(produto -> {
                     for (MultipartFile arquivo : imagens) {
-                        
+
                         String url = ProdutosService.salvarArquivo(arquivo);
                         ProdutoImagem img = new ProdutoImagem(url, null, 0, false);
-                        produto.addImagem(img); 
+                        produto.addImagem(img);
                     }
                     return produtoRepository.save(produto);
                 })
@@ -111,9 +111,15 @@ public class ProdutoController {
                         HttpStatus.NOT_FOUND, "Produto não encontrado"));
     }
 
-     @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public Optional<Produto> acharProId(@RequestParam("id") Long id) {
         return produtoRepository.findById(id);
+    }
+
+    @GetMapping("/por-pessoa/{idPessoa}")
+    public ResponseEntity<List<Produto>> buscarPorPessoa(@PathVariable Long idPessoa) {
+        List<Produto> produtos = produtoRepository.buscarPorIdPessoa(idPessoa);
+        return ResponseEntity.ok(produtos);
     }
 
 }

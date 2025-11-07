@@ -1,16 +1,20 @@
 package br.com.backend.backend.model;
 
 import java.sql.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+
 
 @Entity
 @Table(name = "pessoas", uniqueConstraints = {
         @UniqueConstraint(columnNames = "cpf"),
         @UniqueConstraint(columnNames = "email")
 })
-
 public class Pessoa {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,6 +43,11 @@ public class Pessoa {
     @Column(length = 50)
     private String grupo;
 
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    @JsonIgnore // ✅ evita loop infinito
+    private List<Pedido> pedidos;
+
+    
     // Getters e Setters
     public Long getId() {
         return id;

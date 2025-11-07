@@ -95,7 +95,6 @@ function CadastroEndereco({ tipo, index }) {
           <Form.Label style={{ color: "#34495E" }}>Complemento</Form.Label>
           <Form.Control
             type="text"
-            required
             {...metodos.register(`complemento${tipo}${index}`)}
           />
         </Form.Group>

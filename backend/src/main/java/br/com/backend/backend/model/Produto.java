@@ -11,6 +11,7 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
 
     @Column(nullable = false, length = 100)
     private String nome;
@@ -34,7 +35,8 @@ public class Produto {
     @JsonManagedReference
     private List<ProdutoImagem> imagens = new ArrayList<>();
 
-    public Produto() {}
+    public Produto() {
+    }
 
     public void addImagem(ProdutoImagem imagem) {
         imagens.add(imagem);
@@ -47,28 +49,66 @@ public class Produto {
     }
 
     // Getters e Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Double getAvaliacao() { return avaliacao; }
-    public void setAvaliacao(Double avaliacao) { this.avaliacao = avaliacao; }
+    public String getNome() {
+        return nome;
+    }
 
-    public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public Double getPreco() { return preco; }
-    public void setPreco(Double preco) { this.preco = preco; }
+    public Double getAvaliacao() {
+        return avaliacao;
+    }
 
-    public Integer getQuantidadeEstoque() { return quantidadeEstoque; }
-    public void setQuantidadeEstoque(Integer quantidadeEstoque) { this.quantidadeEstoque = quantidadeEstoque; }
+    public void setAvaliacao(Double avaliacao) {
+        this.avaliacao = avaliacao;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getDescricao() {
+        return descricao;
+    }
 
-    public List<ProdutoImagem> getImagens() { return imagens; }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+
+    public Integer getQuantidadeEstoque() {
+        return quantidadeEstoque;
+    }
+
+    public void setQuantidadeEstoque(Integer quantidadeEstoque) {
+        this.quantidadeEstoque = quantidadeEstoque;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<ProdutoImagem> getImagens() {
+        return imagens;
+    }
+
     public void setImagens(List<ProdutoImagem> imagens) {
         this.imagens.clear();
         if (imagens != null) {

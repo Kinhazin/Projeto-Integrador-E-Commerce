@@ -54,7 +54,7 @@ function ModalAdicionarEndereco(props) {
         <FormProvider {...metodos}>
           <Form onSubmit={metodos.handleSubmit(handleSubmit)}>
             <CadastroEndereco index={1} tipo={"entrega"} />
-            <button type="submit"> Enviar </button>
+            <button className="btn border-dark border-1" type="submit"> Enviar </button>
           </Form>
         </FormProvider>
       </Modal.Body>

@@ -1,8 +1,11 @@
-import { Store, User, ShoppingCart } from "lucide-react";
+import { Store, User, ShoppingCart} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 function HeaderDefault({ openModalLogin, pessoa }) {
   const navigate = useNavigate();
+
+  
+
   return (
     <header
       className="shadow d-flex align-items-center justify-content-between px-4"
@@ -22,6 +25,11 @@ function HeaderDefault({ openModalLogin, pessoa }) {
         className="suave-transition"
       />
       <div className="d-flex flex-row justify-content-center align-items-center gap-4">
+        {pessoa && <><p 
+        onClick={()=>{
+           navigate("/pedidos", { state: { pessoa: pessoa } });
+        }}
+        className="fw-bold suave-transition text-light d-flex align-content-center h-100 m-0">Pedidos</p></>}
         <div
           className="suave-transition d-flex flex-row justify-content-center align-items-center ms-2 gap-1"
           style={{ color: "white" }}
