@@ -27,8 +27,6 @@ function Pedidos() {
     }
   }
 
-
-
   useEffect(() => {
     getPedidos();
   }, []);
@@ -44,30 +42,41 @@ function Pedidos() {
       />
       <Container className="d-flex flex-column align-items-center mt-5">
         {pedidos.length > 0 ? (
-          pedidos.map((pedido) => (
-            <div className="w-75 shadow bg-white rounded-1 mb-3">
-              <Row className="p-3">
-                <Col xs={9}>
-                  <p className=" fs-6 fw-bold text-muted mb-0">{pedido.nome}</p>
-                  <p className=" fw-bold text-muted mb-0">
-                    Valor:{" "}
-                    <span className="fw-semibold">R$ {pedido.preco}</span>
-                  </p>
-                  <p className="fw-bold text-muted mb-0">
-                    Quantidade: <span className="fw-semibold">1</span>
-                  </p>
-                </Col>
-                <Col xs={3}>
-                  <Image
-                    src={`http://localhost:8080${pedido.imagens[0].url}`}
-                    fluid
-                    rounded
-                    style={{ maxHeight: "75px" }}
-                  />
-                </Col>
-              </Row>
-            </div>
-          ))
+          pedidos.map((pedido) => {
+            const imagemPrincipal =
+              pedido.imagens.find((img) => img.principal == true) ||
+              "https://via.placeholder.com/150";
+
+            return (
+              <div className="w-75 shadow bg-white rounded-1 mb-3">
+                <Row className="p-3">
+                  <Col xs={9}>
+                    <p className=" fs-6 fw-bold text-muted mb-0">
+                      {pedido.nome}
+                    </p>
+                    <p className=" fw-bold text-muted mb-0">
+                      Valor:{" "}
+                      <span className="fw-semibold">R$ {pedido.preco}</span>
+                    </p>
+                    <p className="fw-bold text-muted mb-0">
+                      Quantidade: <span className="fw-semibold">1</span>
+                    </p>
+                  </Col>
+                  <Col xs={3}>
+                    <Image
+                      src={
+                        "http://localhost:8080" + imagemPrincipal.url ??
+                        "https://via.placeholder.com/150"
+                      }
+                      fluid
+                      rounded
+                      style={{ maxHeight: "75px" }}
+                    />
+                  </Col>
+                </Row>
+              </div>
+            );
+          })
         ) : (
           <>Sem pedidos</>
         )}
