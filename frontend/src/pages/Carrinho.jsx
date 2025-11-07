@@ -1,37 +1,18 @@
-import { useState, useEffect } from "react"; // Importar useState e useEffect
+import { useState, useEffect } from "react";
 import HeaderDefault from "../components/default/HeaderDefault";
 import ModalLogin from "../components/home/ModalLogin";
 import ModalCadastro from "../components/home/ModalCadastro";
-import { Row, Col, Container, Image } from "react-bootstrap";
-import { Form } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import { useWatch } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Row, Col, Container, Image, Form } from "react-bootstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Carrinho() {
   const [itensDoCarrinho, setItensDoCarrinho] = useState([]);
   const [showModalLogin, setShowModalLogin] = useState(false);
   const [showModalCadastro, setShowModalCadastro] = useState(false);
-  const [showModalEdit, setShowModalEdit] = useState(false);
   const navigate = useNavigate();
-  const metodos = useForm();
   const location = useLocation();
   const { pessoa } = location.state || {};
-
-  const taxa = useWatch({
-    control: metodos.control,
-    name: "frete",
-    defaultValue: 0.15,
-  });
-
-  function verificarCliente(){
-    if(pessoa == undefined || pessoa == null){
-      alert('Cadastre-se ou entre na sua conta para finalizar o pedido')
-      setShowModalLogin(true)
-      throw new Error("Cliente não logado");
-    }
-    navigate("/checkout", { state: { pessoa: pessoa, carrinho : itensDoCarrinho, taxa : taxa } });
-  }
+  const [taxa, setTaxa] = useState(0.15); // frete padrão
 
   useEffect(() => {
     const todasAsChaves = Object.keys(localStorage);
@@ -39,64 +20,37 @@ function Carrinho() {
       .map((chave) => {
         try {
           const item = JSON.parse(localStorage.getItem(chave));
-          // Validação para garantir que é um item de produto
-          if (
-            item &&
-            item.id &&
-            item.nome &&
-            item.preco &&
-            item.quantidadeCarrinho
-          ) {
-            return item;
-          }
+          if (item && item.id && item.nome && item.preco && item.quantidadeCarrinho) return item;
           return null;
         } catch (e) {
-          console.error("Erro ao parsear item do localStorage:", e);
           return null;
         }
       })
       .filter((item) => item !== null);
-
     setItensDoCarrinho(itensCarregados);
   }, []);
 
   const handleAumentarQuantidade = (itemId) => {
     const novosItens = itensDoCarrinho.map((item) => {
       if (item.id === itemId) {
-        const itemAtualizado = {
-          ...item,
-          quantidadeCarrinho: item.quantidadeCarrinho + 1,
-        };
-        // Atualiza o localStorage
-        localStorage.setItem(String(item.id), JSON.stringify(itemAtualizado));
-        return itemAtualizado;
+        const atualizado = { ...item, quantidadeCarrinho: item.quantidadeCarrinho + 1 };
+        localStorage.setItem(String(item.id), JSON.stringify(atualizado));
+        return atualizado;
       }
       return item;
     });
     setItensDoCarrinho(novosItens);
   };
 
-  const handleRemoverDoCarrinho = (itemId) => {
-    const novosItens = itensDoCarrinho.filter((item) => item.id !== itemId);
-    setItensDoCarrinho(novosItens);
-    localStorage.removeItem(String(itemId));
-  };
   const handleDiminuirQuantidade = (itemId) => {
     let itemParaRemover = false;
-    let novosItens = itensDoCarrinho
+    const novosItens = itensDoCarrinho
       .map((item) => {
         if (item.id === itemId) {
           if (item.quantidadeCarrinho > 1) {
-            const itemAtualizado = {
-              ...item,
-              quantidadeCarrinho: item.quantidadeCarrinho - 1,
-            };
-
-            localStorage.setItem(
-              String(item.id),
-              JSON.stringify(itemAtualizado)
-            );
-            return itemAtualizado;
+            const atualizado = { ...item, quantidadeCarrinho: item.quantidadeCarrinho - 1 };
+            localStorage.setItem(String(item.id), JSON.stringify(atualizado));
+            return atualizado;
           } else {
             itemParaRemover = true;
             localStorage.removeItem(String(item.id));
@@ -106,26 +60,37 @@ function Carrinho() {
         return item;
       })
       .filter((item) => item !== null);
-
     setItensDoCarrinho(novosItens);
   };
-  function novoValor(preco, taxa) {
-    console.log(taxa);
-    return preco + preco * taxa;
-  }
 
-  const precoTotal = itensDoCarrinho.reduce((total, item) => {
-    return total + parseFloat(item.preco) * item.quantidadeCarrinho;
-  }, 0);
+  const handleRemoverDoCarrinho = (itemId) => {
+    const novosItens = itensDoCarrinho.filter((item) => item.id !== itemId);
+    localStorage.removeItem(String(itemId));
+    setItensDoCarrinho(novosItens);
+  };
+
+  const precoTotal = itensDoCarrinho.reduce(
+    (total, item) => total + parseFloat(item.preco) * item.quantidadeCarrinho,
+    0
+  );
+
+  const taxaNum = parseFloat(taxa) || 0;
+  const totalComFrete = precoTotal + precoTotal * taxaNum;
+
+  function verificarCliente() {
+    if (!pessoa) {
+      alert("Cadastre-se ou entre na sua conta para finalizar o pedido");
+      setShowModalLogin(true);
+      return;
+    }
+    navigate("/checkout", {
+      state: { pessoa, carrinho: itensDoCarrinho, taxa: taxaNum, total: totalComFrete },
+    });
+  }
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#EDEFF2" }}>
-      {showModalEdit && 
-      <ModalCadastro 
-      show={showModalEdit}
-      onHide={()=>setShowModalEdit(false)}
-      usuario={pessoa}/>}
-      <HeaderDefault openModalLogin={()=>setShowModalEdit(true)} pessoa={pessoa}/>
+      <HeaderDefault openModalLogin={() => setShowModalCadastro(true)} pessoa={pessoa} />
       <Container className="py-5">
         <h1>Meu Carrinho</h1>
         <Row>
@@ -139,9 +104,7 @@ function Carrinho() {
                         <h5>{item.nome}</h5>
                         <p className="mb-0">
                           Preço:{" "}
-                          {Number(
-                            item.preco * item.quantidadeCarrinho
-                          ).toLocaleString("pt-BR", {
+                          {Number(item.preco * item.quantidadeCarrinho).toLocaleString("pt-BR", {
                             style: "currency",
                             currency: "BRL",
                           })}
@@ -161,16 +124,13 @@ function Carrinho() {
                     </Row>
                     <div className="d-flex gap-2 align-items-center mt-2">
                       <button
-                        style={{ backgroundColor: "#34495E" }}
                         className="btn text-white"
+                        style={{ backgroundColor: "#34495E" }}
                         onClick={() => handleDiminuirQuantidade(item.id)}
                       >
                         -
                       </button>
-                      <span
-                        className="d-flex align-items-center justify-content-center"
-                        style={{ minWidth: "20px" }}
-                      >
+                      <span className="d-flex align-items-center justify-content-center" style={{ minWidth: "20px" }}>
                         {item.quantidadeCarrinho}
                       </span>
                       <button
@@ -182,8 +142,8 @@ function Carrinho() {
                       </button>
                       <button
                         className="btn text-white"
-                        onClick={() => handleRemoverDoCarrinho(item.id)}
                         style={{ backgroundColor: "#34495E" }}
+                        onClick={() => handleRemoverDoCarrinho(item.id)}
                       >
                         Remover
                       </button>
@@ -199,10 +159,10 @@ function Carrinho() {
             <div className="p-3 bg-white shadow-sm rounded mb-3">
               <Form.Group>
                 <Form.Label>Escolha o frete</Form.Label>
-                <Form.Select {...metodos.register("frete")}>
-                  <option value="0.15">Entrega padrão</option>
-                  <option value="0.20">Entrega expressa</option>
-                  <option value="0.25">Entrega super rápida</option>
+                <Form.Select value={taxa} onChange={(e) => setTaxa(parseFloat(e.target.value))}>
+                  <option value={0.15}>Entrega padrão</option>
+                  <option value={0.20}>Entrega expressa</option>
+                  <option value={0.25}>Entrega super rápida</option>
                 </Form.Select>
               </Form.Group>
             </div>
@@ -213,40 +173,32 @@ function Carrinho() {
                 <div className="d-flex justify-content-between">
                   <h5>Total:</h5>
                   <h5>
-                    {precoTotal.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
+                    {precoTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </h5>
                 </div>
                 <div className="d-flex justify-content-between">
-                  <h5>Total com frete ({taxa * 100}%):</h5>
+                  <h5>Total com frete ({taxaNum * 100}%):</h5>
                   <h5>
-                    {novoValor(precoTotal, parseFloat(taxa)).toLocaleString(
-                      "pt-BR",
-                      { style: "currency", currency: "BRL" }
-                    )}
+                    {totalComFrete.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </h5>
                 </div>
               </div>
             </div>
-            <button onClick={()=> verificarCliente()} style={{backgroundColor: 'rgb(52, 73, 94)'}} className="bnt w-100 rounded mt-3 p-1 fs-6 fw-bold text-light"> Finalizar pedido</button>
+            <button
+              onClick={verificarCliente}
+              style={{ backgroundColor: "rgb(52, 73, 94)" }}
+              className="bnt w-100 rounded mt-3 p-1 fs-6 fw-bold text-light"
+            >
+              Finalizar pedido
+            </button>
           </Col>
         </Row>
       </Container>
-            {showModalLogin && (
-        <ModalLogin
-          show={showModalLogin}
-          onHide={() => setShowModalLogin(false)}
-          abrirCadastro={() => setShowModalCadastro(true)}
-        />
+
+      {showModalLogin && (
+        <ModalLogin show={showModalLogin} onHide={() => setShowModalLogin(false)} abrirCadastro={() => setShowModalCadastro(true)} />
       )}
-       {showModalCadastro && (
-        <ModalCadastro
-          show={showModalCadastro}
-          onHide={() => setShowModalCadastro(false)}
-        />
-      )}
+      {showModalCadastro && <ModalCadastro show={showModalCadastro} onHide={() => setShowModalCadastro(false)} />}
     </div>
   );
 }
