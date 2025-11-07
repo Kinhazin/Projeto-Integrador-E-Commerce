@@ -27,6 +27,8 @@ function Pedidos() {
     }
   }
 
+
+
   useEffect(() => {
     getPedidos();
   }, []);
@@ -57,9 +59,7 @@ function Pedidos() {
                 </Col>
                 <Col xs={3}>
                   <Image
-                    src={"//"}
-                    // src={`http://localhost:8080${item.imagens[0].url}`}
-                    // alt={item.nome}
+                    src={`http://localhost:8080${pedido.imagens[0].url}`}
                     fluid
                     rounded
                     style={{ maxHeight: "75px" }}
