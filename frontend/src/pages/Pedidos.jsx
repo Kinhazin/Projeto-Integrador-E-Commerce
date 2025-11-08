@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useEffect, useEffectEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import ModalLogin from "../components/home/ModalLogin";
 import ModalCadastro from "../components/home/ModalCadastro";
 import HeaderDefault from "../components/default/HeaderDefault";

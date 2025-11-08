@@ -20,7 +20,12 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @PostMapping
+    
+@PostMapping(
+    path = "/criar",
+    consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
+    produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+)
     public ResponseEntity<RespostaPedido> criarPedido(@RequestBody Pedido pedido) {
         try {
             Pedido salvo = pedidoService.criarPedidoComItens(pedido);

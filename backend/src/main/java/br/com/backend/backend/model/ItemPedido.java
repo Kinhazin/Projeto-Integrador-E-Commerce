@@ -1,5 +1,7 @@
 package br.com.backend.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,9 +12,12 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "pedido_id")
+@JsonBackReference
+private Pedido pedido;
+
 
     @Column(nullable = false)
     private Long produtoId;

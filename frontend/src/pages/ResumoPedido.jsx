@@ -59,9 +59,9 @@ function ResumoPedido() {
 
             console.log(pedidoData)
 
-            const response = await fetch("http://localhost:8080/api/pedidos", {
+            const response = await fetch("http://localhost:8080/api/pedidos/criar", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(pedidoData),
             });
 

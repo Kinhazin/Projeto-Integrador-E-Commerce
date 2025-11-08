@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "pedidos")
+@JsonIgnoreProperties(ignoreUnknown = true) 
 public class Pedido {
 
     @Id
@@ -32,6 +34,9 @@ public class Pedido {
     @Column(nullable = false, length = 30)
     private String formaPagamento;
 
+    // Campo adicional para compatibilidade com o front-end
+    private Long enderecoId;
+
     @ManyToOne
     @JoinColumn(name = "id_pessoa", nullable = false)
     private Pessoa pessoa;
@@ -40,78 +45,41 @@ public class Pedido {
     @JsonManagedReference
     private List<ItemPedido> itens;
 
-    public Pedido() {
-    }
+    public Pedido() {}
 
-    public Long getId() {
-        return id;
-    }
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getNumeroPedido() { return numeroPedido; }
+    public void setNumeroPedido(String numeroPedido) { this.numeroPedido = numeroPedido; }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
+    public Double getValorTotal() { return valorTotal; }
+    public void setValorTotal(Double valorTotal) { this.valorTotal = valorTotal; }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
+    public Double getFrete() { return frete; }
+    public void setFrete(Double frete) { this.frete = frete; }
 
-    public List<ItemPedido> getItens() {
-        return itens;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
+
+    public String getFormaPagamento() { return formaPagamento; }
+    public void setFormaPagamento(String formaPagamento) { this.formaPagamento = formaPagamento; }
+
+    public Pessoa getPessoa() { return pessoa; }
+    public void setPessoa(Pessoa pessoa) { this.pessoa = pessoa; }
+
+    public Long getEnderecoId() { return enderecoId; }
+    public void setEnderecoId(Long enderecoId) { this.enderecoId = enderecoId; }
+
+    public List<ItemPedido> getItens() { return itens; }
     public void setItens(List<ItemPedido> itens) {
         this.itens = itens;
-    }
-
-    public String getNumeroPedido() {
-        return numeroPedido;
-    }
-
-    public void setNumeroPedido(String numeroPedido) {
-        this.numeroPedido = numeroPedido;
-    }
-
-    public Double getValorTotal() {
-        return valorTotal;
-    }
-
-    public void setValorTotal(Double valorTotal) {
-        this.valorTotal = valorTotal;
-    }
-
-    public Double getFrete() {
-        return frete;
-    }
-
-    public void setFrete(Double frete) {
-        this.frete = frete;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public String getFormaPagamento() {
-        return formaPagamento;
-    }
-
-    public void setFormaPagamento(String formaPagamento) {
-        this.formaPagamento = formaPagamento;
+        if (itens != null) {
+            itens.forEach(item -> item.setPedido(this)); // Vincula cada item ao pedido
+        }
     }
 }
