@@ -12,10 +12,22 @@ function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
   const { pessoa } = location.state || {};
 
+  function converterDataISO(isoString) {
+  const data = new Date(isoString);
+  const dia = String(data.getDate()).padStart(2, '0');
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const ano = data.getFullYear();
+
+  const horas = String(data.getHours()).padStart(2, '0');
+  const minutos = String(data.getMinutes()).padStart(2, '0');
+  const segundos = String(data.getSeconds()).padStart(2, '0');
+  return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+}
+
   async function getPedidos() {
     try {
       const resp = await fetch(
-        `http://localhost:8080/api/produtos/por-pessoa/${pessoa.id}`
+        `http://localhost:8080/api/pedidos/por-pessoa/${pessoa.id}`
       );
       if (resp.ok) {
         const data = await resp.json();
@@ -43,35 +55,24 @@ function Pedidos() {
       <Container className="d-flex flex-column align-items-center mt-5">
         {pedidos.length > 0 ? (
           pedidos.map((pedido) => {
-            const imagemPrincipal =
-              pedido.imagens.find((img) => img.principal == true) ||
-              "https://via.placeholder.com/150";
-
             return (
               <div className="w-75 shadow bg-white rounded-1 mb-3">
                 <Row className="p-3">
                   <Col xs={9}>
                     <p className=" fs-6 fw-bold text-muted mb-0">
-                      {pedido.nome}
+                      {pedido.numeroPedido}
                     </p>
                     <p className=" fw-bold text-muted mb-0">
                       Valor:{" "}
-                      <span className="fw-semibold">R$ {pedido.preco}</span>
+                      <span className="fw-semibold">R$ {pedido.valorTotal}</span>
                     </p>
                     <p className="fw-bold text-muted mb-0">
-                      Quantidade: <span className="fw-semibold">1</span>
+                      Status: <span className="fw-semibold">{pedido.status}</span>
                     </p>
                   </Col>
-                  <Col xs={3}>
-                    <Image
-                      src={
-                        "http://localhost:8080" + imagemPrincipal.url ??
-                        "https://via.placeholder.com/150"
-                      }
-                      fluid
-                      rounded
-                      style={{ maxHeight: "75px" }}
-                    />
+                  <Col xs={3} className="d-flex flex-column gap-3">
+                  <span className="fw-semibold">{converterDataISO(pedido.dataCriacao)}</span>
+                  <button className="btn border border-1">Detalhes</button>
                   </Col>
                 </Row>
               </div>
