@@ -33,14 +33,14 @@ public class ProdutoRepositoryTest {
     }
 
     @Test
-    void deveAcharPeloNome(){
+    void deveAcharProdutoPeloNome(){
         produtoRepository.save(produto);
         List<Produto> produtoAchado = produtoRepository.findByNomeContainingIgnoreCase("monitor");
         assertThat(produtoAchado).isNotEmpty();
     }
 
     @Test
-    void deveAcharPeloStatus(){
+    void deveAcharProdutoPeloStatus(){
         produtoRepository.save(produto);
 
         Produto produto2 = new Produto();

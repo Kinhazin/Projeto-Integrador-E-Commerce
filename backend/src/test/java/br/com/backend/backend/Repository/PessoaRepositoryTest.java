@@ -19,8 +19,7 @@ class PessoaRepositoryTest {
     private PessoaRepository pessoaRepository;
 
     @Test
-    void deveSalvarPessoa() {
-        // Arrange
+    void deveAcharPeloEmailESenha() {
         Pessoa pessoa = new Pessoa();
         pessoa.setNome("Lucas Amorim");
         pessoa.setEmail("teste@email.com");
@@ -31,9 +30,7 @@ class PessoaRepositoryTest {
         pessoa.setData_nascimento(new java.sql.Date(new Date().getTime()));;
         pessoaRepository.save(pessoa);
 
-        // Act
          List<Pessoa> resultado = pessoaRepository.findByEmailAndSenha("teste@email.com", "123456");
-        // Assert
         assertThat(resultado).isNotEmpty();
     }
 }
