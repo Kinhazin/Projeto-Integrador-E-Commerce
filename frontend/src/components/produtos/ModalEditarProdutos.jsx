@@ -52,7 +52,8 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos, grupo
             const txt = await resp.text();
             throw new Error(`Falha ao atualizar produto: ${resp.status} ${txt}`);
         }
-
+        onHide();
+        getProdutos()
         return resp.json().catch(() => null); 
     };
 
@@ -75,7 +76,7 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos, grupo
             const txt = await resp.text();
             throw new Error(`Falha ao enviar imagens: ${resp.status} ${txt}`);
         }
-
+        
         return resp.json().catch(() => null);
     };
 
@@ -91,6 +92,8 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos, grupo
             }
 
             if (onSaved) onSaved();
+             getProdutos()
+             onHide();
             alert("Imagem definida como principal!");
         } catch (err) {
             console.error(err);
@@ -111,6 +114,8 @@ function ModalEditarProduto({ show, onHide, produto, onSaved, getProdutos, grupo
                 throw new Error(`Falha ao excluir imagem: ${resp.status} ${txt}`);
             }
             if (onSaved) onSaved();
+             getProdutos()
+             onHide();
             alert("Imagem excluída com sucesso!");
         } catch (err) {
             console.error(err);

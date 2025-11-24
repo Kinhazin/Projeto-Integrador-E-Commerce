@@ -93,6 +93,7 @@ function Pedidos() {
         <ModalCadastro
           show={showModalCadastro}
           onHide={() => setShowModalCadastro(false)}
+          usuario={pessoa}
         />
       )}
     </div>

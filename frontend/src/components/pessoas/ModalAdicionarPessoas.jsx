@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 function ModalAdicionarPessoas(props) {
+  const metodo = useForm();
   function validarCPF(cpf) {
     cpf = cpf.replace(/[^\d]+/g, "");
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -60,6 +61,8 @@ function ModalAdicionarPessoas(props) {
         }),
       });
       if (response.ok) {
+        alert("Pessoa adicionada com sucesso!");
+        metodo.reset();
         props.onHide();
         props.getPessoas();
       }
@@ -69,9 +72,12 @@ function ModalAdicionarPessoas(props) {
     }
   };
 
-  const metodo = useForm();
+
   return (
-    <Modal show={props.show} onHide={props.onHide} centered size="lg">
+    <Modal show={props.show} onHide={() => {
+      metodo.reset();
+      props.onHide();
+      }} centered size="lg">
       <Modal.Header
         style={{ backgroundColor: "#34495E" }}
         className="text-white border-none"

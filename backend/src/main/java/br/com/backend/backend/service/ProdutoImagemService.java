@@ -14,7 +14,7 @@ import java.util.List;
 public class ProdutoImagemService {
 
     private final ProdutoImagemRepository imagemRepo;
-    private final Path pastaImagens; 
+    private final Path pastaImagens;
 
     public ProdutoImagemService(
             ProdutoImagemRepository imagemRepo,
@@ -37,17 +37,16 @@ public class ProdutoImagemService {
 
         reordenarImagens(produtoId);
 
-        if (eraPrincipal) {
-            promoverOutraComoPrincipal(produtoId);
-        }
     }
 
     private void apagarArquivoSeLocal(String url) {
-        if (url == null || url.isBlank()) return;
+        if (url == null || url.isBlank())
+            return;
 
         String lower = url.toLowerCase();
         boolean ehExterno = lower.startsWith("http://") || lower.startsWith("https://");
-        if (ehExterno) return;
+        if (ehExterno)
+            return;
 
         try {
             Path caminho = pastaImagens.resolve(url).normalize();
@@ -66,10 +65,26 @@ public class ProdutoImagemService {
         imagemRepo.saveAll(restantes);
     }
 
-    public void promoverOutraComoPrincipal(Long produtoId) {
-        imagemRepo.findByIdWithProduto(produtoId).ifPresent(img -> {
-            img.setPrincipal(true);
-            imagemRepo.save(img);
-        });
+    @Transactional
+    public void promoverOutraComoPrincipal(Long imagemId) {
+
+        // 1. Busca a imagem pelo ID, incluindo o produto
+        ProdutoImagem imagem = imagemRepo.findByIdWithProduto(imagemId)
+                .orElseThrow(() -> new RuntimeException("Imagem não encontrada"));
+
+        Long produtoId = imagem.getProduto().getId();
+
+        // 2. Busca todas as imagens desse produto
+        List<ProdutoImagem> imagens = imagemRepo.findAllByProduto_Id(produtoId);
+
+        // 3. Marca todas como false
+        for (ProdutoImagem img : imagens) {
+            img.setPrincipal(false);
+        }
+        imagemRepo.saveAll(imagens);
+
+        // 4. Marca a selecionada como true
+        imagem.setPrincipal(true);
+        imagemRepo.save(imagem);
     }
 }

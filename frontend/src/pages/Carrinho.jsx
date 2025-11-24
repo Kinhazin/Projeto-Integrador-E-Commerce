@@ -202,7 +202,7 @@ function Carrinho() {
       {showModalLogin && (
         <ModalLogin show={showModalLogin} onHide={() => setShowModalLogin(false)} abrirCadastro={() => setShowModalCadastro(true)} />
       )}
-      {showModalCadastro && <ModalCadastro show={showModalCadastro} onHide={() => setShowModalCadastro(false)} />}
+      {showModalCadastro && <ModalCadastro  usuario={pessoa} show={showModalCadastro} onHide={() => setShowModalCadastro(false)} />}
     </div>
   );
 }

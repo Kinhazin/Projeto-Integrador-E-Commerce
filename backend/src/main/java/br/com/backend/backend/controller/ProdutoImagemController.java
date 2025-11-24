@@ -24,7 +24,6 @@ public class ProdutoImagemController {
     public ResponseEntity<Void> setPrincipal(@PathVariable("id") Long imagemId) {
         service.promoverOutraComoPrincipal(imagemId);
         return ResponseEntity.noContent().build();
-
     }
 
 }

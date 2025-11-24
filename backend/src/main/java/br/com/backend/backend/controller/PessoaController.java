@@ -1,16 +1,16 @@
 package br.com.backend.backend.controller;
 
-import br.com.backend.backend.model.Pessoa; // suposição de que você tenha uma classe Pessoa
-import br.com.backend.backend.repository.PessoaRepository; // suposição do repositório
+import br.com.backend.backend.model.Pessoa; 
+import br.com.backend.backend.repository.PessoaRepository; 
 
-import org.springframework.beans.factory.annotation.Autowired; // se usar Spring
+import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*; // para anotações REST
+import org.springframework.web.bind.annotation.*; 
 
 import java.util.List;
 
-@RestController // Falando que esse controller é RestFull, ou seja, não renderiza páginas.
-@RequestMapping("/api/pessoas") // Passando o meio de acesso para minha requisição
+@RestController 
+@RequestMapping("/api/pessoas") 
 public class PessoaController {
 
     @Autowired

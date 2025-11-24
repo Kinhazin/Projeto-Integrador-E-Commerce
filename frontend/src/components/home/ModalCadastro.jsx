@@ -8,7 +8,7 @@ import CadastroEndereco from "./CadastroEndereco";
 import CadastroPessoa from "./CadastroPessoa";
 import { useEffect, useState } from "react";
 import ModalAdicionarEndereco from "./ModalAdicionarEndereco";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 function ModalCadastro(props) {
   const metodos = useForm();
@@ -22,6 +22,7 @@ function ModalCadastro(props) {
   const propsSomenteLeitura = usuario !== undefined ? { readOnly: true } : {};
   const [endereceos, setEnderecos] = useState([]);
   const [showModalAddMaisEndereco, setShowModalAddMaisEndereco] = useState(false)
+  const [pessoasmCadastradas, setPessoasCadastradas] = useState([])
 
   const getEnderecos = async (pessoaId) => {
     const response = await fetch(
@@ -35,6 +36,17 @@ function ModalCadastro(props) {
       return data;
     }
   };
+
+  const getPessoasCadastradas = async () => {
+    const response = await fetch(
+      `http://localhost:8080/api/pessoas`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data)
+      setPessoasCadastradas(data);
+    }
+  }
 
   const criarUsuario = async (data) => {
     function validarCPF(cpf) {
@@ -76,6 +88,13 @@ function ModalCadastro(props) {
 
     const texto = utilizar ? "faturamento" : "entrega e faturamento";
     try {
+
+      const emailExistente = pessoasmCadastradas.some(
+        (element) => element.email === data.email
+      );
+      if (emailExistente) {
+        throw new Error("E-mail já cadastrado");
+      }
       const response = await fetch("http://localhost:8080/api/pessoas", {
         method: "POST",
         headers: {
@@ -207,8 +226,8 @@ function ModalCadastro(props) {
           estado: data[`estado${endereco.tipo}${index}`],
           tipo: endereco.tipo,
           pessoa: {
-              id: usuario.id,
-            }, 
+            id: usuario.id,
+          },
         };
 
         const resposta = await fetch(
@@ -229,7 +248,7 @@ function ModalCadastro(props) {
         getEnderecos();
       }
 
-       const url = `http://localhost:8080/api/pessoas/buscar?email=${encodeURIComponent(
+      const url = `http://localhost:8080/api/pessoas/buscar?email=${encodeURIComponent(
         data.email
       )}&senha=${encodeURIComponent(data.senha)}`;
 
@@ -256,7 +275,7 @@ function ModalCadastro(props) {
       getEnderecos(usuario.id)
       props.onHide();
       navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoar[0] } });
-      
+
       alert('Atualizado com sucesso')
     } catch (erro) {
       alert(erro);
@@ -267,6 +286,7 @@ function ModalCadastro(props) {
 
 
   useEffect(() => {
+    getPessoasCadastradas();
     if (usuario != undefined) {
       metodos.setValue("nome", usuario.nome.split(" ")[0]);
       metodos.setValue("sobrenome", usuario.nome.split(" ").slice(1).join(" "));
@@ -275,14 +295,14 @@ function ModalCadastro(props) {
       metodos.setValue("nascimento", usuario.data_nascimento);
       metodos.setValue("senha", usuario.senha);
       metodos.setValue("email", usuario.email);
-
       getEnderecos(usuario.id);
     }
-  }, [metodos, usuario]);
+  }, [metodos, usuario,]);
 
-  
+
 
   useEffect(() => {
+    getPessoasCadastradas();
     if (endereceos.length > 0) {
       endereceos.forEach((endereco, index) => {
         const tipo = endereco.tipo;
@@ -306,14 +326,14 @@ function ModalCadastro(props) {
         style={{ backgroundColor: "#34495E" }}
         closeButton
       >
-        {showModalAddMaisEndereco && 
-        <ModalAdicionarEndereco
-        fecharPai={props.onHide}
-        getEndereco={getEnderecos}
-        id={usuario?.id}
-        show={showModalAddMaisEndereco}
-        onHide={()=>setShowModalAddMaisEndereco(false)}
-        />}
+        {showModalAddMaisEndereco &&
+          <ModalAdicionarEndereco
+            fecharPai={props.onHide}
+            getEndereco={getEnderecos}
+            id={usuario?.id}
+            show={showModalAddMaisEndereco}
+            onHide={() => setShowModalAddMaisEndereco(false)}
+          />}
         <Modal.Title>
           {usuario == undefined ? "Cadastra-se" : "Seu perfil"}
         </Modal.Title>
@@ -327,7 +347,7 @@ function ModalCadastro(props) {
             <CadastroPessoa onlyRead={propsSomenteLeitura} />
             {usuario == undefined ? (
               <>
-                <CadastroEndereco  index={1} tipo={"faturamento"} />
+                <CadastroEndereco index={1} tipo={"faturamento"} />
                 <Row className="mb-3 d-flex justify-content-center">
                   <Row
                     className="fw-bolder mb-3"
@@ -367,7 +387,7 @@ function ModalCadastro(props) {
                   type="button"
                   style={{ height: "40px" }}
                   className="bnt col-3"
-                  onClick={()=> setShowModalAddMaisEndereco(true)}
+                  onClick={() => setShowModalAddMaisEndereco(true)}
                 >
                   adicionar endereço
                 </Button>
