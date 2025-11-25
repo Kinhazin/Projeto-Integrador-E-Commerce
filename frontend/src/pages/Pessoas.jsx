@@ -25,6 +25,7 @@ function Pessoas() {
     name: "pessoasFiltradas",
     defaultValue: "",
   });
+  
   const pessoasFiltradasLista = pessoas.filter(
     (pessoa) =>
       pessoa.nome.toLowerCase().includes(pessoasFiltradas.toLowerCase()) ||

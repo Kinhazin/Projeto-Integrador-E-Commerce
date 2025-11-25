@@ -20,6 +20,12 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @GetMapping()
+    public ResponseEntity<List<Pedido>> listarPedidos() {
+        List<Pedido> pedidos = pedidoService.listarPedidos();
+        return ResponseEntity.ok(pedidos);
+    }
+
     
 @PostMapping(
     path = "/criar",

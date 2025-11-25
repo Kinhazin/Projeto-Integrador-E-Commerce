@@ -60,4 +60,8 @@ public class PedidoService {
         long count = pedidoRepository.count() + 1;
         return String.format("PED-%05d", count);
     }
+
+    public List<Pedido> listarPedidos() {
+        return pedidoRepository.findAll();
+    }
 }

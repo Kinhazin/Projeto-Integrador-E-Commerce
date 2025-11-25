@@ -11,6 +11,7 @@ import Checkout from '../pages/Checkout';
 import Pedidos from '../pages/Pedidos';
 import ResumoPedido from '../pages/ResumoPedido';
 import DetalhesDoPedido from '../pages/DetalhesDoPedido';
+import PedidosEditados from '../pages/PedidosEditados';
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/resumo-pedido" element={<ResumoPedido />} />
                 <Route path="/pedidos" element={<Pedidos />} />
                 <Route path="/detalhes-pedido" element={<DetalhesDoPedido />} />
+                <Route path="/pedidos-editados" element={<PedidosEditados />} />
             </Routes>
         </BrowserRouter>
     );
