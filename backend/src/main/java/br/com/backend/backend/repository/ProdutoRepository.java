@@ -29,7 +29,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
             SELECT p.*
             FROM PRODUTOS p
             INNER JOIN ITENS_PEDIDO ip ON p.id = ip.produto_id
-            WHERE ip.pedido_id = :idPedido
+            WHERE ip.pedido_id = :idPedido 
             """, nativeQuery = true)
     List<Produto> buscarPorIdPedido(@Param("idPedido") Long idPedido);
 
