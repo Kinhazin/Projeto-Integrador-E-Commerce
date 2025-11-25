@@ -13,20 +13,24 @@ import java.util.Optional;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     List<Produto> findByNomeContainingIgnoreCase(String nome);
+
     List<Produto> findByStatus(String status);
 
-    
-
-@Query(value = """
-        SELECT p.* 
-        FROM produtos p 
-        INNER JOIN itens_pedido ip ON p.id = ip.produto_id
-        INNER JOIN pedidos pe ON ip.pedido_id = pe.id
-        WHERE pe.id_pessoa = :idPessoa
-        """, nativeQuery = true)
+    @Query(value = """
+            SELECT p.*
+            FROM produtos p
+            INNER JOIN itens_pedido ip ON p.id = ip.produto_id
+            INNER JOIN pedidos pe ON ip.pedido_id = pe.id
+            WHERE pe.id_pessoa = :idPessoa
+            """, nativeQuery = true)
     List<Produto> buscarPorIdPessoa(@Param("idPessoa") Long idPessoa);
 
-
-
+    @Query(value = """
+            SELECT p.*
+            FROM PRODUTOS p
+            INNER JOIN ITENS_PEDIDO ip ON p.id = ip.produto_id
+            WHERE ip.pedido_id = :idPedido
+            """, nativeQuery = true)
+    List<Produto> buscarPorIdPedido(@Param("idPedido") Long idPedido);
 
 }

@@ -7,22 +7,13 @@ function CadastroPessoa({onlyRead}) {
     <>
       <Row className="mb-3 d-flex justify-content-center">
         <Form.Group md="4" className="col-5">
-          <Form.Label style={{ color: "#34495E" }}>Nome</Form.Label>
+          <Form.Label style={{ color: "#34495E" }}>Nome completo</Form.Label>
           <Form.Control
             type="text"
             required
             
             minLength={3}
             {...metodos.register("nome")}
-          />
-        </Form.Group>
-        <Form.Group md="4" className="col-5">
-          <Form.Label style={{ color: "#34495E" }}>Sobrenome</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            minLength={3}
-            {...metodos.register("sobrenome")}
           />
         </Form.Group>
       </Row>

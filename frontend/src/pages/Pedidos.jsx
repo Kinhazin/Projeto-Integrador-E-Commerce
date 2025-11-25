@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import ModalLogin from "../components/home/ModalLogin";
 import ModalCadastro from "../components/home/ModalCadastro";
 import HeaderDefault from "../components/default/HeaderDefault";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function Pedidos() {
+  const navigate = useNavigate();
   const location = useLocation();
   const [showModalLogin, setShowModalLogin] = useState(false);
   const [showModalCadastro, setShowModalCadastro] = useState(false);
@@ -13,16 +15,16 @@ function Pedidos() {
   const { pessoa } = location.state || {};
 
   function converterDataISO(isoString) {
-  const data = new Date(isoString);
-  const dia = String(data.getDate()).padStart(2, '0');
-  const mes = String(data.getMonth() + 1).padStart(2, '0');
-  const ano = data.getFullYear();
+    const data = new Date(isoString);
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = data.getFullYear();
 
-  const horas = String(data.getHours()).padStart(2, '0');
-  const minutos = String(data.getMinutes()).padStart(2, '0');
-  const segundos = String(data.getSeconds()).padStart(2, '0');
-  return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
-}
+    const horas = String(data.getHours()).padStart(2, '0');
+    const minutos = String(data.getMinutes()).padStart(2, '0');
+    const segundos = String(data.getSeconds()).padStart(2, '0');
+    return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+  }
 
   async function getPedidos() {
     try {
@@ -71,8 +73,10 @@ function Pedidos() {
                     </p>
                   </Col>
                   <Col xs={3} className="d-flex flex-column gap-3">
-                  <span className="fw-semibold">{converterDataISO(pedido.dataCriacao)}</span>
-                  <button className="btn border border-1">Detalhes</button>
+                    <span className="fw-semibold">{converterDataISO(pedido.dataCriacao)}</span>
+                    <button className="btn border border-1"
+                      onClick={() => navigate("/detalhes-pedido", { state: { pessoa: pessoa, pedido : pedido} })}
+                    >Detalhes</button>
                   </Col>
                 </Row>
               </div>

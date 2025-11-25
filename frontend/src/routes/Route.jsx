@@ -10,6 +10,7 @@ import HomePageLogado from '../pages/HomePageLogado';
 import Checkout from '../pages/Checkout';
 import Pedidos from '../pages/Pedidos';
 import ResumoPedido from '../pages/ResumoPedido';
+import DetalhesDoPedido from '../pages/DetalhesDoPedido';
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/resumo-pedido" element={<ResumoPedido />} />
                 <Route path="/pedidos" element={<Pedidos />} />
+                <Route path="/detalhes-pedido" element={<DetalhesDoPedido />} />
             </Routes>
         </BrowserRouter>
     );

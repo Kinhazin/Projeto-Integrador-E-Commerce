@@ -76,7 +76,7 @@ function ModalCadastro(props) {
     }
 
     const pessoa = {
-      nome: data.nome + " " + data.sobrenome,
+      nome: data.nome,
       cpf: data.cpf,
       data_nascimento: new Date(data.nascimento).toISOString().split("T")[0],
       genero: data.genero,
@@ -187,7 +187,7 @@ function ModalCadastro(props) {
   const atualizarUsuario = async (data) => {
     try {
       const pessoa = {
-        nome: data.nome + " " + data.sobrenome,
+        nome: data.nome,
         cpf: data.cpf,
         data_nascimento: new Date(data.nascimento).toISOString().split("T")[0],
         genero: data.genero,
@@ -288,8 +288,7 @@ function ModalCadastro(props) {
   useEffect(() => {
     getPessoasCadastradas();
     if (usuario != undefined) {
-      metodos.setValue("nome", usuario.nome.split(" ")[0]);
-      metodos.setValue("sobrenome", usuario.nome.split(" ").slice(1).join(" "));
+      metodos.setValue("nome", usuario.nome);
       metodos.setValue("cpf", usuario.cpf);
       metodos.setValue("genero", usuario.genero);
       metodos.setValue("nascimento", usuario.data_nascimento);

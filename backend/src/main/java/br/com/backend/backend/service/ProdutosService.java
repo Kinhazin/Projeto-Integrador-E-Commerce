@@ -10,6 +10,7 @@ import br.com.backend.backend.model.Produto;
 import java.io.InputStream;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,4 +54,14 @@ public class ProdutosService {
         // A forma correta de usar o Optional
         return resultado.orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
     }
+
+    public List<Produto> buscarProdutosPorIdPedido(Long idPedido) {
+        List<Produto> produtos = produtoRepository.buscarPorIdPedido(idPedido);
+
+        if (produtos.isEmpty()) {
+            throw new RuntimeException("Nenhum produto encontrado para o pedido " + idPedido);
+        }
+        return produtos;
+    }
+
 }

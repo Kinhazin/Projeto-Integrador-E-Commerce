@@ -122,4 +122,10 @@ public class ProdutoController {
         return ResponseEntity.ok(produtos);
     }
 
+    @GetMapping("/por-pedido/{idPedido}")
+    public ResponseEntity<List<Produto>> buscarPorPedido(@PathVariable Long idPedido) {
+        List<Produto> produtos = ProdutosService.buscarProdutosPorIdPedido(idPedido);
+        return ResponseEntity.ok(produtos);
+    }
+
 }

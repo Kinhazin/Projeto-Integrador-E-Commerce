@@ -28,8 +28,10 @@ public class PedidoService {
         String numeroPedido = gerarNumeroPedido();
         pedido.setNumeroPedido(numeroPedido);
 
-        if (pedido.getValorTotal() == null) pedido.setValorTotal(0.0);
-        if (pedido.getFrete() == null) pedido.setFrete(0.0);
+        if (pedido.getValorTotal() == null)
+            pedido.setValorTotal(0.0);
+        if (pedido.getFrete() == null)
+            pedido.setFrete(0.0);
 
         // Salva o pedido
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
@@ -46,11 +48,9 @@ public class PedidoService {
         return pedidoSalvo;
     }
 
-    
     public List<Pedido> buscarPorPessoaId(Long pessoaId) {
         return pedidoRepository.findByPessoaId(pessoaId);
     }
-
 
     public Optional<Pedido> buscarPorId(Long id) {
         return pedidoRepository.findById(id);
