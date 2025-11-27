@@ -64,4 +64,14 @@ public class PedidoService {
     public List<Pedido> listarPedidos() {
         return pedidoRepository.findAll();
     }
+
+    public Pedido atualizarStatus(Long id, String novoStatus) throws Exception {
+        Optional<Pedido> pedidoOpt = pedidoRepository.findById(id);
+        if (pedidoOpt.isEmpty()) {
+            throw new Exception("Pedido não encontrado");
+        }
+        Pedido pedido = pedidoOpt.get();
+        pedido.setStatus(novoStatus);
+        return pedidoRepository.save(pedido);
+    }
 }

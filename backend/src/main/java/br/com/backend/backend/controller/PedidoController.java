@@ -62,5 +62,15 @@ public class PedidoController {
         }
         return ResponseEntity.ok(pedidos);
     }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> atualizarStatus(@PathVariable Long id, @RequestBody String novoStatus) {
+        try {
+            Pedido atualizado = pedidoService.atualizarStatus(id, novoStatus);
+            return ResponseEntity.ok(atualizado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar status: " + e.getMessage());
+        }
+    }
     
 }

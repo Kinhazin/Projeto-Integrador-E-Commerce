@@ -1,6 +1,7 @@
 import { Table } from "react-bootstrap";
 import { CirclePlus } from "lucide-react";
 import { useEffect, useState } from "react";
+import ModalPedido from "../components/pedidos/ModalPedido";
 
 function PedidosEditados() {
     const [pedidos, setPedidos] = useState([]);
@@ -9,14 +10,14 @@ function PedidosEditados() {
     const indiceUltimoItem = paginaAtual * itensPorPagina;
     const indicePrimeiroItem = indiceUltimoItem - itensPorPagina;
     const totalPaginas = Math.ceil(pedidos.length / itensPorPagina);
-
+    const [showModalPedido, setShowModalPedido] = useState(false);
+    const [pedido, setPedido] = useState(null);
+    
 
     let itensPagina = pedidos.slice(
         indicePrimeiroItem,
         indiceUltimoItem
     );
-
-
 
     async function fetchPedidos() {
         try {
@@ -59,11 +60,16 @@ function PedidosEditados() {
                             <td className="text-center">{pedido.numeroPedido}</td>
                             <td className="text-center">{new Date(pedido.dataCriacao).toLocaleDateString()}</td>
                             <td className="text-center">R$ {pedido.valorTotal.toFixed(2)}</td>
-                            <td className="text-center">{pedido.status}</td>
+                            <td className="text-center">{pedido.status.replace(/"/g, '')}</td>
                             <td colSpan={2} className="text-center">
                                 <button
                                     type="button"
                                     className="btn btn-secondary me-2"
+                                    onClick={()=>{
+                                        setPedido(pedido)
+                                        setShowModalPedido(true)
+                                        console.log(pedido)
+                                    }}
                                 >
                                     Editar
                                 </button>
@@ -97,6 +103,14 @@ function PedidosEditados() {
                     Próxima
                 </button>
             </div>
+            {showModalPedido && (
+                <ModalPedido
+                    show={showModalPedido}
+                    pedido={pedido}
+                    handleClose={() => setShowModalPedido(false)}
+                    fetchPedidos={fetchPedidos}
+                />
+            )}
         </div>
     )
 }
