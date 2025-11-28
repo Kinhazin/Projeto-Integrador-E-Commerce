@@ -1,17 +1,17 @@
 import { Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { useFormContext } from "react-hook-form";
-function CadastroPessoa({onlyRead}) {
+function CadastroPessoa({ onlyRead }) {
   const metodos = useFormContext();
   return (
     <>
       <Row className="mb-3 d-flex justify-content-center">
-        <Form.Group md="4" className="col-5">
+        <Form.Group md="4" className="col-10">
           <Form.Label style={{ color: "#34495E" }}>Nome completo</Form.Label>
           <Form.Control
             type="text"
             required
-            
+
             minLength={3}
             {...metodos.register("nome")}
           />
@@ -50,7 +50,7 @@ function CadastroPessoa({onlyRead}) {
         </Form.Group>
       </Row>
       <Row className="mb-3 d-flex justify-content-center">
-        <Form.Group className="col-5">
+        <Form.Group className="col-10">
           <Form.Label style={{ color: "#34495E" }}>
             Data de nascimento
           </Form.Label>
@@ -60,18 +60,25 @@ function CadastroPessoa({onlyRead}) {
             required
           ></Form.Control>
         </Form.Group>
+      </Row>
+      <Row className="mb-3 d-flex justify-content-center">
+        <Form.Group md="4" className="col-10">
+          <Form.Label style={{ color: "#34495E" }}>E-mail</Form.Label>
+          <Form.Control {...metodos.register("email")} {...onlyRead} required></Form.Control>
+        </Form.Group>
+        <Form.Group md="4" className="col-5"></Form.Group>
+      </Row>
+      <Row className="mb-5  d-flex justify-content-center">
         <Form.Group md="4" className="col-5">
           <Form.Label style={{ color: "#34495E" }}>Senha</Form.Label>
           <Form.Control {...metodos.register("senha")} required></Form.Control>
         </Form.Group>
-      </Row>
-      <Row className="mb-5 d-flex justify-content-center">
-        <Form.Group md="4" className="col-10">
-          <Form.Label style={{ color: "#34495E" }}>E-mail</Form.Label>
-          <Form.Control {...metodos.register("email")} {...onlyRead}required></Form.Control>
+        <Form.Group md="4" className="col-5">
+          <Form.Label style={{ color: "#34495E" }}>Confirmar senha</Form.Label>
+          <Form.Control {...metodos.register("confirmarSenha")} required></Form.Control>
         </Form.Group>
-        <Form.Group md="4" className="col-5"></Form.Group>
       </Row>
+
     </>
   );
 }

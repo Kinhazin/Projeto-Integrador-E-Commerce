@@ -88,8 +88,8 @@ public class ProdutoImagemService {
         imagemRepo.save(imagem);
     }
 
-    public ProdutoImagem buscarImagensDoProduto(Long produtoId) {
+    public List<ProdutoImagem> buscarImagensDoProduto(Long produtoId) {
         List<ProdutoImagem> imagens = imagemRepo.findAllByProduto_IdOrderByOrdemAsc(produtoId);
-        return imagens.isEmpty() ? null : imagens.get(0);
+        return imagens;
     }
 }

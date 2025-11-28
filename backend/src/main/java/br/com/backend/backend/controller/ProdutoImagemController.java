@@ -1,6 +1,11 @@
 package br.com.backend.backend.controller;
 
+import br.com.backend.backend.model.Produto;
+import br.com.backend.backend.model.ProdutoImagem;
 import br.com.backend.backend.service.ProdutoImagemService;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +29,11 @@ public class ProdutoImagemController {
     public ResponseEntity<Void> setPrincipal(@PathVariable("id") Long imagemId) {
         service.promoverOutraComoPrincipal(imagemId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public List<ProdutoImagem> getImagem(@PathVariable("id") Long imagemId) {
+        return service.buscarImagensDoProduto(imagemId);
     }
 
 }

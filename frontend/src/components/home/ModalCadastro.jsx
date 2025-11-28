@@ -75,6 +75,11 @@ function ModalCadastro(props) {
       throw new Error("Error");
     }
 
+    if(data.senha.trim() != data.confirmarSenha.trim()){
+      alert("Senhas não coincidem");
+      throw new Error("Error");
+    }
+
     const pessoa = {
       nome: data.nome,
       cpf: data.cpf,
