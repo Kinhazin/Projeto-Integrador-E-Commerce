@@ -4,14 +4,15 @@ import HeaderDefault from "../components/default/HeaderDefault";
 import { useNavigate } from "react-router-dom";
 import ModalLogin from "../components/home/ModalLogin";
 import ModalCadastro from "../components/home/ModalCadastro";
+import { useForm } from "react-hook-form";
 
 function HomePage() {
   const [produtos, setProdutos] = useState([]);
   const navigate = useNavigate();
   const [showModalLogin, setShowModalLogin] = useState(false);
   const [showModalCadastro, setShowModalCadastro] = useState(false);
+  const metodos = useForm();
 
-  // Sua função para buscar dados está ótima, não precisa mudar!
   async function getProdutos() {
     try {
       const response = await fetch("http://localhost:8080/api/produtos");
@@ -29,6 +30,19 @@ function HomePage() {
   useEffect(() => {
     getProdutos();
   }, []);
+
+  var pesquisa = metodos.watch("pesquisa") || "";
+  var produtosFiltrados = produtos.filter((produto) =>
+    produto.nome.toLowerCase().includes(pesquisa.toLowerCase())
+  );
+
+  const categoriaSelecionada = metodos.watch("categoria") || "";
+  useEffect(() => {
+    console.log(categoriaSelecionada)
+      metodos.setValue("pesquisa", categoriaSelecionada.toLowerCase());
+  }, [categoriaSelecionada]);
+
+
 
   function adicionarCarrinho(produto) {
     produto.quantidadeCarrinho = produto.quantidadeCarrinho ?? 1;
@@ -65,8 +79,24 @@ function HomePage() {
       <HeaderDefault openModalLogin={() => setShowModalLogin(true)} />
       <main className="flex-grow-1 p-4">
         <Container fluid>
+          <Row className="col-3 mb-4">
+            <Form.Control {...metodos.register("pesquisa")} placeholder="Pesquise um produto" size="lg" type="search" />
+            <Form.Group className="mt-2">
+              <Form.Label>Filtrar por categoria:</Form.Label>
+              <Form.Select {...metodos.register("categoria")}>
+                <option value="">Todas as categorias</option>
+                <option value="teclado">Teclados</option>
+                <option value="mouse">Mouses</option>
+                <option value="headset">Headset</option>
+                <option value="cadeira">Cadeira</option>
+                <option value="monitor">Monitores</option>
+                <option value="gabinete">Gabinetes</option>
+                <option value="notebook">Noteboks</option>
+              </Form.Select>
+            </Form.Group>
+          </Row>
           <Row className="g-4">
-            {produtos.map((produto) => {
+            {produtosFiltrados.map((produto) => {
               const imagemPrincipal =
                 produto.imagens.find((img) => img.principal == true) ||
                 "https://via.placeholder.com/150";
