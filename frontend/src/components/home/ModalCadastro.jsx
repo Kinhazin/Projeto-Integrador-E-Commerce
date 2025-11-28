@@ -120,9 +120,9 @@ function ModalCadastro(props) {
         });
         const dado = await resposta.json();
 
-        const id_pessoas = dado[0].id;
+        const id_pessoas = dado.id;
 
-        console.log(data);
+        console.log(dado);
         console.log(id_pessoas);
 
         const faturamento = {
@@ -268,18 +268,18 @@ function ModalCadastro(props) {
 
       const pessoar = await responset.json();
 
-      if (!pessoa || pessoar.length === 0) {
+      if (!pessoar) {
         throw new Error("E-mail ou senha incorretos.");
       }
 
-      if (pessoar[0].status !== "ativo") {
+      if (pessoar.status !== "ativo") {
         throw new Error("Usuário inativo. Entre em contato com o administrador.");
       }
 
-      const grupo = pessoar[0].grupo;
+      const grupo = pessoar.grupo;
       getEnderecos(usuario.id)
       props.onHide();
-      navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoar[0] } });
+      navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoar } });
 
       alert('Atualizado com sucesso')
     } catch (erro) {

@@ -29,18 +29,18 @@ function ModalLogin(props) {
 
       const pessoa = await response.json();
 
-      if (!pessoa || pessoa.length === 0) {
+      if (!pessoa) {
         throw new Error("E-mail ou senha incorretos.");
       }
 
-      if (pessoa[0].status !== "ativo") {
+      if (pessoa.status !== "ativo") {
         throw new Error("Usuário inativo. Entre em contato com o administrador.");
       }
 
-      const grupo = pessoa[0].grupo;
+      const grupo = pessoa.grupo;
 
       props.onHide();
-      navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoa[0] } });
+      navigate("/homepagelogado", { state: { grupo: grupo, pessoa: pessoa } });
     } catch (error) {
       setErro(error.message);
     } finally {

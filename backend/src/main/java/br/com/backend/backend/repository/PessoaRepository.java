@@ -9,5 +9,8 @@ import java.util.List;
 
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
-    List<Pessoa> findByEmailAndSenha(String email, String senha); 
+    List<Pessoa> findByEmailAndSenha(String email, String senha);
+    Pessoa findByEmail(String email); 
 }
+
+
